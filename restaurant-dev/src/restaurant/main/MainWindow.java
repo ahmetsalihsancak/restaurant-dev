@@ -57,7 +57,7 @@ public class MainWindow {
 		menuFile = new RestaurantFile("menu.txt");
 		customerFile = new CustomerFile("customer.txt");
 		menu = new Menu(menuFile.getFile());
-		customerList = new ArrayList();
+		customerList = new ArrayList<Customer>();
 		labelList = new ArrayList<>();
 		initialize();
 	}

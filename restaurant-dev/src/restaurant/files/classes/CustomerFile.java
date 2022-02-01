@@ -9,8 +9,8 @@ import java.util.Scanner;
 public class CustomerFile {
 
 	private File file;
-	private List<String> fileLineList = new ArrayList();
-	private List<String[]> fileLineListArray = new ArrayList();
+	private List<String> fileLineList = new ArrayList<String>();
+	private List<String[]> fileLineListArray = new ArrayList<String[]>();
 	
 	public CustomerFile(String fileName) {
 		createFile(fileName);
@@ -65,6 +65,10 @@ public class CustomerFile {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	public void writeToFile(String text) {
+		
 	}
 	
 	public List<String> getFileLines(){

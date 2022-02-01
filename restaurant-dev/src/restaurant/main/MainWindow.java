@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import restaurant.files.classes.CustomerFileReader;
+import restaurant.files.classes.CustomerFile;
 import restaurant.files.classes.RestaurantFile;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
@@ -20,16 +20,19 @@ import restaurant.customers.CustomerPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class MainWindow {
 
 	private JFrame frame;
 	private JTable table;
 	private DefaultTableModel tableModel;
-	private RestaurantFile file;
+	private RestaurantFile menuFile;
+	private CustomerFile customerFile;
 	private Menu menu;
 	
 	private List<Customer> customerList;
+	private List<JLabel> labelList;
 	
 	/**
 	 * Launch the application.
@@ -51,9 +54,11 @@ public class MainWindow {
 	 * Create the application.
 	 */
 	public MainWindow() {
-		file = new RestaurantFile("menu.txt");
-		menu = new Menu(file.getFile());
+		menuFile = new RestaurantFile("menu.txt");
+		customerFile = new CustomerFile("customer.txt");
+		menu = new Menu(menuFile.getFile());
 		customerList = new ArrayList();
+		labelList = new ArrayList<>();
 		initialize();
 	}
 
@@ -61,7 +66,7 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("RETTO");
 		frame.setBounds(100, 100, 720, 625);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -92,7 +97,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer1.setBounds(458, 98, 89, 23);
+		btnCustomer1.setBounds(458, 98, 60, 23);
 		frame.getContentPane().add(btnCustomer1);
 		
 		JButton btnCustomer2 = new JButton("2");
@@ -101,7 +106,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer2.setBounds(458, 132, 89, 23);
+		btnCustomer2.setBounds(458, 132, 60, 23);
 		frame.getContentPane().add(btnCustomer2);
 		
 		JButton btnCustomer3 = new JButton("3");
@@ -110,7 +115,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer3.setBounds(458, 166, 89, 23);
+		btnCustomer3.setBounds(458, 166, 60, 23);
 		frame.getContentPane().add(btnCustomer3);
 		
 		JButton btnCustomer4 = new JButton("4");
@@ -119,7 +124,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer4.setBounds(458, 200, 89, 23);
+		btnCustomer4.setBounds(458, 200, 60, 23);
 		frame.getContentPane().add(btnCustomer4);
 		
 		JButton btnCustomer5 = new JButton("5");
@@ -128,7 +133,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer5.setBounds(458, 234, 89, 23);
+		btnCustomer5.setBounds(458, 234, 60, 23);
 		frame.getContentPane().add(btnCustomer5);
 		
 		JButton btnCustomer6 = new JButton("6");
@@ -137,7 +142,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer6.setBounds(458, 268, 89, 23);
+		btnCustomer6.setBounds(458, 268, 60, 23);
 		frame.getContentPane().add(btnCustomer6);
 		
 		JButton btnCustomer7 = new JButton("7");
@@ -146,7 +151,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer7.setBounds(458, 302, 89, 23);
+		btnCustomer7.setBounds(458, 302, 60, 23);
 		frame.getContentPane().add(btnCustomer7);
 		
 		JButton btnCustomer8 = new JButton("8");
@@ -155,7 +160,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer8.setBounds(458, 336, 89, 23);
+		btnCustomer8.setBounds(458, 336, 60, 23);
 		frame.getContentPane().add(btnCustomer8);
 		
 		JButton btnCustomer9 = new JButton("9");
@@ -164,7 +169,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer9.setBounds(458, 370, 89, 23);
+		btnCustomer9.setBounds(458, 370, 60, 23);
 		frame.getContentPane().add(btnCustomer9);
 		
 		JButton btnCustomer10 = new JButton("10");
@@ -173,7 +178,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer10.setBounds(458, 404, 89, 23);
+		btnCustomer10.setBounds(458, 404, 60, 23);
 		frame.getContentPane().add(btnCustomer10);
 		
 		JButton btnCustomer11 = new JButton("11");
@@ -182,7 +187,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer11.setBounds(458, 438, 89, 23);
+		btnCustomer11.setBounds(458, 438, 60, 23);
 		frame.getContentPane().add(btnCustomer11);
 		
 		JButton btnCustomer12 = new JButton("12");
@@ -191,13 +196,72 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer12.setBounds(458, 472, 89, 23);
+		btnCustomer12.setBounds(458, 472, 60, 23);
 		frame.getContentPane().add(btnCustomer12);
 		
+		JLabel lbl1 = new JLabel("New label");
+		lbl1.setBounds(528, 102, 75, 14);
+		frame.getContentPane().add(lbl1);
+		labelList.add(lbl1);
+		
+		JLabel lbl2 = new JLabel("New label");
+		lbl2.setBounds(528, 136, 75, 14);
+		frame.getContentPane().add(lbl2);
+		labelList.add(lbl2);
+		
+		JLabel lbl3 = new JLabel("New label");
+		lbl3.setBounds(528, 170, 75, 14);
+		frame.getContentPane().add(lbl3);
+		labelList.add(lbl3);
+		
+		JLabel lbl4 = new JLabel("New label");
+		lbl4.setBounds(528, 204, 75, 14);
+		frame.getContentPane().add(lbl4);
+		labelList.add(lbl4);
+		
+		JLabel lbl5 = new JLabel("New label");
+		lbl5.setBounds(528, 238, 75, 14);
+		frame.getContentPane().add(lbl5);
+		labelList.add(lbl5);
+		
+		JLabel lbl6 = new JLabel("New label");
+		lbl6.setBounds(528, 272, 75, 14);
+		frame.getContentPane().add(lbl6);
+		labelList.add(lbl6);
+		
+		JLabel lbl7 = new JLabel("New label");
+		lbl7.setBounds(528, 306, 75, 14);
+		frame.getContentPane().add(lbl7);
+		labelList.add(lbl7);
+		
+		JLabel lbl8 = new JLabel("New label");
+		lbl8.setBounds(528, 340, 75, 14);
+		frame.getContentPane().add(lbl8);
+		labelList.add(lbl8);
+		
+		JLabel lbl9 = new JLabel("New label");
+		lbl9.setBounds(528, 374, 75, 14);
+		frame.getContentPane().add(lbl9);
+		labelList.add(lbl9);
+		
+		JLabel lbl10 = new JLabel("New label");
+		lbl10.setBounds(528, 408, 75, 14);
+		frame.getContentPane().add(lbl10);
+		labelList.add(lbl10);
+		
+		JLabel lbl11 = new JLabel("New label");
+		lbl11.setBounds(528, 442, 75, 14);
+		frame.getContentPane().add(lbl11);
+		labelList.add(lbl11);
+		
+		JLabel lbl12 = new JLabel("New label");
+		lbl12.setBounds(528, 476, 75, 14);
+		frame.getContentPane().add(lbl12);
+		labelList.add(lbl12);
+		
 		File file = new File("customer.txt");
-		CustomerFileReader c = new CustomerFileReader();
-		c.readFileScannerLine(file);
-		fillCustomerList(customerList, c.getFileLinesSplitted());
+		customerFile.readFileScannerLine(file);
+		fillCustomerList(customerList, customerFile.getFileLinesSplitted());
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel) {
@@ -214,11 +278,12 @@ public class MainWindow {
 			int no = Integer.parseInt(strings[0]);
 			String name = strings[1];
 			c = new Customer(no, name);
+			c.addLabel(labelList.get(no-1));
 			for (int i = 2; i < strings.length; i=i+2) {
 				String itemName = strings[i];
 				for (MenuItem item : menu.getMenuList()) {
 					if(item.getName().equalsIgnoreCase(itemName)) {
-						MenuItem cItem = item;
+						MenuItem cItem = new MenuItem(itemName, item.getPrice());
 						cItem.setCount(Integer.parseInt(strings[i+1]));
 						c.addItem(cItem);
 						break;
@@ -232,7 +297,7 @@ public class MainWindow {
 	private void customerButtonAction(ActionEvent e) {
 		JButton btn = (JButton) e.getSource();
 		int customerNo = Integer.parseInt(btn.getText());
-		CustomerPanel cPanel = new CustomerPanel(customerList.get(customerNo-1));
+		CustomerPanel cPanel = new CustomerPanel(customerList.get(customerNo-1), menu.getMenuList());
 		cPanel.setVisible(true);
 	}
 }

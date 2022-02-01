@@ -12,12 +12,6 @@ public class Customer {
 	private List<MenuItem> itemList;
 	private float totalPrice;
 	
-	public Customer(int no) {
-		this.no = no;
-		this.name = "Masa: " + no;
-		createCustomer();
-	}
-	
 	public Customer(int no, String name) {
 		this.no = no;
 		this.name = name;
@@ -27,5 +21,18 @@ public class Customer {
 	private void createCustomer() {
 		itemList = new ArrayList<MenuItem>();
 		totalPrice = 0;
+	}
+	
+	public void addItem(MenuItem item) {
+		itemList.add(item);
+		totalPrice = totalPrice + (item.getPrice() * item.getCount());
+	}
+	
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+	
+	public List<MenuItem> getItemList(){
+		return itemList;
 	}
 }

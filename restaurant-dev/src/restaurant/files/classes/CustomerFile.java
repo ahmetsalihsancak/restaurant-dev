@@ -53,6 +53,8 @@ public class CustomerFile {
 	
 	public void readFileScannerLine(File file) {
 		try {
+			fileLineList.clear();
+			fileLineListArray.clear();
 			String[] s;
 			Scanner scanner = new Scanner(file);
 			while(scanner.hasNextLine()) {
@@ -67,8 +69,39 @@ public class CustomerFile {
 		}
 	}
 	
-	public void writeToFile(String text) {
-		
+	public void writeCustomerToCustomerFile(String text, int no) {
+		try {
+			fileLineList.clear();
+			fileLineListArray.clear();
+			String[] s;
+			int counter = 0;
+			Scanner scanner = new Scanner(file);
+			while(scanner.hasNextLine()) {
+				counter++;
+				if (counter == no) {
+					String scanned = scanner.nextLine();
+					scanned = text;
+					fileLineList.add(scanned);
+					s = scanned.split(",");
+					fileLineListArray.add(s);
+				} else {
+					String scanned = scanner.nextLine();
+					fileLineList.add(scanned);
+					s = scanned.split(",");
+					fileLineListArray.add(s);
+				}
+			}
+			scanner.close();
+			file.delete();
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file.getName());
+			for (String string : fileLineList) {
+				writer.write(string + "\n");
+			}
+			writer.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	public List<String> getFileLines(){

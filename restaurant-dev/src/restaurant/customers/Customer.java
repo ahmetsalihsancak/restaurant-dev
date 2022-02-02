@@ -34,6 +34,10 @@ public class Customer {
 		}
 	}
 	
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
 	public void addItem(MenuItem item) {
 		itemList.add(item);
 	}
@@ -58,5 +62,9 @@ public class Customer {
 	
 	public List<MenuItem> getItemList(){
 		return itemList;
+	}
+	
+	public int getNo() {
+		return no;
 	}
 }

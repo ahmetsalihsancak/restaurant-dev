@@ -21,6 +21,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class MainWindow {
 
@@ -28,7 +30,7 @@ public class MainWindow {
 	private JTable table;
 	private DefaultTableModel tableModel;
 	private RestaurantFile menuFile;
-	private CustomerFile customerFile;
+	private static CustomerFile customerFile;
 	private Menu menu;
 	
 	private List<Customer> customerList;
@@ -259,9 +261,19 @@ public class MainWindow {
 		frame.getContentPane().add(lbl12);
 		labelList.add(lbl12);
 		
+		JLabel lblMenu = new JLabel("MENU");
+		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMenu.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblMenu.setBounds(10, 64, 438, 23);
+		frame.getContentPane().add(lblMenu);
+		
 		File file = new File("customer.txt");
 		customerFile.readFileScannerLine(file);
 		fillCustomerList(customerList, customerFile.getFileLinesSplitted());
+	}
+	
+	public static CustomerFile getCustomerFile() {
+		return customerFile;
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel) {

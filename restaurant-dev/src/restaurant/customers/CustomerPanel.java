@@ -42,8 +42,9 @@ public class CustomerPanel extends JFrame {
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private JTextField textFieldCount;
-	private CustomerFile customerFile;
-
+	private static CustomerFile customerFile;
+	private JLabel lbl1;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -54,7 +55,8 @@ public class CustomerPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		this.setTitle(customer.getName());
+		setTitle(customer.getName());
+		customer.updateLabel(customer.getName());
 		customerFile = MainWindow.getCustomerFile();
 		
 		JPanel panel = new JPanel();
@@ -75,7 +77,7 @@ public class CustomerPanel extends JFrame {
 		fillTableModel(tableModel, customer);
 		table.setModel(tableModel);
 		
-		JLabel lbl1 = new JLabel(customer.getName());
+		lbl1 = new JLabel(customer.getName());
 		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lbl1.setBounds(10, 11, 262, 40);
 		panel.add(lbl1);
@@ -130,6 +132,8 @@ public class CustomerPanel extends JFrame {
 				customer.updateName("Masa " + customer.getNo());
 				customer.updateLabel(customer.getName());
 				customer.getItemList().clear();
+				setTitle(customer.getName());
+				lbl1.setText(customer.getName());
 				fillTableModel(tableModel, customer);
 				updatePrice(lblPrice, customer.getTotalPrice());
 				setCustomerText(customer);
@@ -156,6 +160,16 @@ public class CustomerPanel extends JFrame {
 		});
 		btnRemoveAllSelectedItem.setBounds(250, 162, 244, 23);
 		panel.add(btnRemoveAllSelectedItem);
+		
+		JButton btnChangeCustomerName = new JButton("\u0130smini De\u011Fi\u015Ftir");
+		btnChangeCustomerName.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditCustomerPanelFrame edit = new EditCustomerPanelFrame(customer);
+				edit.setVisible(true);
+			}
+		});
+		btnChangeCustomerName.setBounds(250, 356, 135, 23);
+		panel.add(btnChangeCustomerName);
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel, Customer customer) {
@@ -228,7 +242,7 @@ public class CustomerPanel extends JFrame {
 		setCustomerText(customer);
 	}
 	
-	private void setCustomerText(Customer customer) {
+	public static void setCustomerText(Customer customer) {
 		String first = customer.getNo() + "," + customer.getName();
 		String items = "";
 		for (int i = 0; i < customer.getItemList().size(); i++) {

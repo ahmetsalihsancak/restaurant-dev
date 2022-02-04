@@ -1,28 +1,31 @@
 package restaurant.main;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import restaurant.customers.Customer;
+import restaurant.customers.CustomerPanel;
 import restaurant.files.classes.CustomerFile;
 import restaurant.files.classes.RestaurantFile;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
-import restaurant.customers.Customer;
-import restaurant.customers.CustomerPanel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
 
 public class MainWindow {
 
@@ -31,6 +34,8 @@ public class MainWindow {
 	private DefaultTableModel tableModel;
 	private RestaurantFile menuFile;
 	private static CustomerFile customerFile;
+	private static ImageIcon icon;
+	private static String imageFileName;
 	private Menu menu;
 	
 	private List<Customer> customerList;
@@ -61,6 +66,8 @@ public class MainWindow {
 		menu = new Menu(menuFile.getFile());
 		customerList = new ArrayList<Customer>();
 		labelList = new ArrayList<>();
+		imageFileName = "logo_144x144.png";
+		icon = new ImageIcon(imageFileName);
 		initialize();
 	}
 
@@ -69,12 +76,18 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame("RETTO");
-		frame.setBounds(100, 100, 630, 660);
+		frame.setBounds(100, 100, 660, 660);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		try {
+			frame.setIconImage(ImageIO.read(new File(imageFileName)));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
+		}
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 200, 438, 393);
+		scrollPane.setBounds(106, 211, 438, 393);
 		frame.getContentPane().add(scrollPane);
 		
 		JPanel panel = new JPanel();
@@ -99,7 +112,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer1.setBounds(475, 196, 60, 23);
+		btnCustomer1.setBounds(179, 30, 60, 23);
 		frame.getContentPane().add(btnCustomer1);
 		
 		JButton btnCustomer2 = new JButton("2");
@@ -108,7 +121,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer2.setBounds(475, 230, 60, 23);
+		btnCustomer2.setBounds(334, 30, 60, 23);
 		frame.getContentPane().add(btnCustomer2);
 		
 		JButton btnCustomer3 = new JButton("3");
@@ -117,7 +130,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer3.setBounds(475, 264, 60, 23);
+		btnCustomer3.setBounds(489, 30, 60, 23);
 		frame.getContentPane().add(btnCustomer3);
 		
 		JButton btnCustomer4 = new JButton("4");
@@ -126,7 +139,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer4.setBounds(475, 298, 60, 23);
+		btnCustomer4.setBounds(179, 64, 60, 23);
 		frame.getContentPane().add(btnCustomer4);
 		
 		JButton btnCustomer5 = new JButton("5");
@@ -135,7 +148,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer5.setBounds(475, 332, 60, 23);
+		btnCustomer5.setBounds(334, 64, 60, 23);
 		frame.getContentPane().add(btnCustomer5);
 		
 		JButton btnCustomer6 = new JButton("6");
@@ -144,7 +157,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer6.setBounds(475, 366, 60, 23);
+		btnCustomer6.setBounds(489, 64, 60, 23);
 		frame.getContentPane().add(btnCustomer6);
 		
 		JButton btnCustomer7 = new JButton("7");
@@ -153,7 +166,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer7.setBounds(475, 400, 60, 23);
+		btnCustomer7.setBounds(179, 98, 60, 23);
 		frame.getContentPane().add(btnCustomer7);
 		
 		JButton btnCustomer8 = new JButton("8");
@@ -162,7 +175,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer8.setBounds(475, 434, 60, 23);
+		btnCustomer8.setBounds(334, 98, 60, 23);
 		frame.getContentPane().add(btnCustomer8);
 		
 		JButton btnCustomer9 = new JButton("9");
@@ -171,7 +184,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer9.setBounds(475, 468, 60, 23);
+		btnCustomer9.setBounds(489, 98, 60, 23);
 		frame.getContentPane().add(btnCustomer9);
 		
 		JButton btnCustomer10 = new JButton("10");
@@ -180,7 +193,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer10.setBounds(475, 502, 60, 23);
+		btnCustomer10.setBounds(179, 132, 60, 23);
 		frame.getContentPane().add(btnCustomer10);
 		
 		JButton btnCustomer11 = new JButton("11");
@@ -189,7 +202,7 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer11.setBounds(475, 536, 60, 23);
+		btnCustomer11.setBounds(334, 132, 60, 23);
 		frame.getContentPane().add(btnCustomer11);
 		
 		JButton btnCustomer12 = new JButton("12");
@@ -198,74 +211,79 @@ public class MainWindow {
 				customerButtonAction(e);
 			}
 		});
-		btnCustomer12.setBounds(475, 570, 60, 23);
+		btnCustomer12.setBounds(489, 132, 60, 23);
 		frame.getContentPane().add(btnCustomer12);
 		
 		JLabel lbl1 = new JLabel("New label");
-		lbl1.setBounds(545, 200, 75, 14);
+		lbl1.setBounds(249, 34, 75, 14);
 		frame.getContentPane().add(lbl1);
 		labelList.add(lbl1);
 		
 		JLabel lbl2 = new JLabel("New label");
-		lbl2.setBounds(545, 234, 75, 14);
+		lbl2.setBounds(404, 34, 75, 14);
 		frame.getContentPane().add(lbl2);
 		labelList.add(lbl2);
 		
 		JLabel lbl3 = new JLabel("New label");
-		lbl3.setBounds(545, 268, 75, 14);
+		lbl3.setBounds(559, 34, 75, 14);
 		frame.getContentPane().add(lbl3);
 		labelList.add(lbl3);
 		
 		JLabel lbl4 = new JLabel("New label");
-		lbl4.setBounds(545, 302, 75, 14);
+		lbl4.setBounds(249, 68, 75, 14);
 		frame.getContentPane().add(lbl4);
 		labelList.add(lbl4);
 		
 		JLabel lbl5 = new JLabel("New label");
-		lbl5.setBounds(545, 336, 75, 14);
+		lbl5.setBounds(404, 68, 75, 14);
 		frame.getContentPane().add(lbl5);
 		labelList.add(lbl5);
 		
 		JLabel lbl6 = new JLabel("New label");
-		lbl6.setBounds(545, 370, 75, 14);
+		lbl6.setBounds(559, 68, 75, 14);
 		frame.getContentPane().add(lbl6);
 		labelList.add(lbl6);
 		
 		JLabel lbl7 = new JLabel("New label");
-		lbl7.setBounds(545, 404, 75, 14);
+		lbl7.setBounds(249, 102, 75, 14);
 		frame.getContentPane().add(lbl7);
 		labelList.add(lbl7);
 		
 		JLabel lbl8 = new JLabel("New label");
-		lbl8.setBounds(545, 438, 75, 14);
+		lbl8.setBounds(404, 102, 75, 14);
 		frame.getContentPane().add(lbl8);
 		labelList.add(lbl8);
 		
 		JLabel lbl9 = new JLabel("New label");
-		lbl9.setBounds(545, 472, 75, 14);
+		lbl9.setBounds(559, 102, 75, 14);
 		frame.getContentPane().add(lbl9);
 		labelList.add(lbl9);
 		
 		JLabel lbl10 = new JLabel("New label");
-		lbl10.setBounds(545, 506, 75, 14);
+		lbl10.setBounds(249, 136, 75, 14);
 		frame.getContentPane().add(lbl10);
 		labelList.add(lbl10);
 		
 		JLabel lbl11 = new JLabel("New label");
-		lbl11.setBounds(545, 540, 75, 14);
+		lbl11.setBounds(404, 136, 75, 14);
 		frame.getContentPane().add(lbl11);
 		labelList.add(lbl11);
 		
 		JLabel lbl12 = new JLabel("New label");
-		lbl12.setBounds(545, 574, 75, 14);
+		lbl12.setBounds(559, 136, 75, 14);
 		frame.getContentPane().add(lbl12);
 		labelList.add(lbl12);
 		
 		JLabel lblMenu = new JLabel("MENU");
 		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMenu.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblMenu.setBounds(20, 166, 438, 23);
+		lblMenu.setBounds(106, 177, 438, 23);
 		frame.getContentPane().add(lblMenu);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(20, 11, 144, 155);
+		frame.getContentPane().add(panel_1);
+		panel_1.add(new JLabel(icon));
 		
 		File file = new File("customer.txt");
 		customerFile.readFileScannerLine(file);
@@ -274,6 +292,10 @@ public class MainWindow {
 	
 	public static CustomerFile getCustomerFile() {
 		return customerFile;
+	}
+	
+	public static String getImageFileName() {
+		return imageFileName;
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel) {

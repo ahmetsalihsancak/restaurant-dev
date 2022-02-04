@@ -1,5 +1,5 @@
-1,Masa 1 zz
-2,Masa 2 3223
+1,Masa 1
+2,Masa 2,Cay,0
 3,Masa 3
 4,Masa 4
 5,Masa 5

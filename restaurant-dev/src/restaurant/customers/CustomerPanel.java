@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
@@ -43,7 +45,8 @@ public class CustomerPanel extends JFrame {
 	private JTable table;
 	private JTextField textFieldCount;
 	private static CustomerFile customerFile;
-	private JLabel lbl1;
+	private static JLabel lbl1;
+	private String imageFileName;
 	
 	/**
 	 * Create the frame.
@@ -55,6 +58,14 @@ public class CustomerPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		try {
+			imageFileName = MainWindow.getImageFileName();
+			setIconImage(ImageIO.read(new File(imageFileName)));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
+		}
+		
 		setTitle(customer.getName());
 		customer.updateLabel(customer.getName());
 		customerFile = MainWindow.getCustomerFile();
@@ -94,22 +105,22 @@ public class CustomerPanel extends JFrame {
 		panel.add(comboBox);
 		fillMenuList(comboBox, menuList);
 		
-		JButton btnAdd = new JButton("Ekle");
+		JButton btnAdd = new JButton("\u00DCr\u00FCn\u00FC Ekle");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addButtonAction(comboBox, customer, lblPrice, menuList);
 			}
 		});
-		btnAdd.setBounds(395, 224, 99, 23);
+		btnAdd.setBounds(395, 262, 99, 23);
 		panel.add(btnAdd);
 		
-		JButton btnRemove = new JButton("Sil");
+		JButton btnRemove = new JButton("\u00DCr\u00FCn\u00FC Sil");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeButtonAction(comboBox, customer, lblPrice);
 			}
 		});
-		btnRemove.setBounds(395, 257, 99, 23);
+		btnRemove.setBounds(395, 296, 99, 23);
 		panel.add(btnRemove);
 		
 		textFieldCount = new JTextField();
@@ -126,7 +137,7 @@ public class CustomerPanel extends JFrame {
 		panel.add(textFieldCount);
 		textFieldCount.setColumns(10);
 		
-		JButton btnRemoveAll = new JButton("S\u0131f\u0131rla");
+		JButton btnRemoveAll = new JButton("Masay\u0131 S\u0131f\u0131rla");
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customer.updateName("Masa " + customer.getNo());
@@ -139,7 +150,7 @@ public class CustomerPanel extends JFrame {
 				setCustomerText(customer);
 			}
 		});
-		btnRemoveAll.setBounds(395, 356, 99, 23);
+		btnRemoveAll.setBounds(380, 356, 114, 23);
 		panel.add(btnRemoveAll);
 		
 		JButton btnRemoveAllSelectedItem = new JButton("Se\u00E7ili \u00DCr\u00FCn\u00FCn Hepsini Sil");
@@ -168,8 +179,30 @@ public class CustomerPanel extends JFrame {
 				edit.setVisible(true);
 			}
 		});
-		btnChangeCustomerName.setBounds(250, 356, 135, 23);
+		btnChangeCustomerName.setBounds(250, 356, 120, 23);
 		panel.add(btnChangeCustomerName);
+		
+		JButton btnIncrease = new JButton("+");
+		btnIncrease.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int count = Integer.parseInt(textFieldCount.getText());
+				count++;
+				textFieldCount.setText(String.valueOf(count));
+			}
+		});
+		btnIncrease.setBounds(395, 228, 45, 23);
+		panel.add(btnIncrease);
+		
+		JButton btnDecrease = new JButton("-");
+		btnDecrease.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int count = Integer.parseInt(textFieldCount.getText());
+				if(count > 1) count--;
+				textFieldCount.setText(String.valueOf(count));
+			}
+		});
+		btnDecrease.setBounds(449, 228, 45, 23);
+		panel.add(btnDecrease);
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel, Customer customer) {
@@ -252,5 +285,9 @@ public class CustomerPanel extends JFrame {
 		}
 		String text = first + items;
 		customerFile.writeCustomerToCustomerFile(text, customer.getNo());
+	}
+	
+	public static void setLabel(String text) {
+		lbl1.setText(text);
 	}
 }

@@ -1,0 +1,14 @@
+Cay 5
+Soda 3
+Latte 8
+Su 2
+Kahve 7
+Espresso 8
+Cheescake 12
+Deneme10 10
+Deneme13 13
+Deneme12 12
+Deneme11 11
+Deneme15 15
+Deneme16 16
+Deneme17 17

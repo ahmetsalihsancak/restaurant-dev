@@ -51,7 +51,7 @@ public class MainWindow {
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null,e,"Hata",0);
 				}
 			}
 		});
@@ -303,39 +303,51 @@ public class MainWindow {
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel) {
-		for (int i = 0; i < menu.getMenuList().size(); i++) {
-			String name = menu.getMenuList().get(i).getName();
-			float price = menu.getMenuList().get(i).getPrice();
-			tableModel.addRow(new Object[]{name,price});
+		try {
+			for (int i = 0; i < menu.getMenuList().size(); i++) {
+				String name = menu.getMenuList().get(i).getName();
+				float price = menu.getMenuList().get(i).getPrice();
+				tableModel.addRow(new Object[]{name,price});
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 	
 	private void fillCustomerList(List<Customer> customerList, List<String[]> fileLineListArray) {
-		Customer c;
-		for (String[] strings : fileLineListArray) {
-			int no = Integer.parseInt(strings[0]);
-			String name = strings[1];
-			c = new Customer(no, name);
-			c.addLabel(labelList.get(no-1));
-			for (int i = 2; i < strings.length; i=i+2) {
-				String itemName = strings[i];
-				for (MenuItem item : menu.getMenuList()) {
-					if(item.getName().equalsIgnoreCase(itemName)) {
-						MenuItem cItem = new MenuItem(itemName, item.getPrice());
-						cItem.setCount(Integer.parseInt(strings[i+1]));
-						c.addItem(cItem);
-						break;
+		try {
+			Customer c;
+			for (String[] strings : fileLineListArray) {
+				int no = Integer.parseInt(strings[0]);
+				String name = strings[1];
+				c = new Customer(no, name);
+				c.addLabel(labelList.get(no-1));
+				for (int i = 2; i < strings.length; i=i+2) {
+					String itemName = strings[i];
+					for (MenuItem item : menu.getMenuList()) {
+						if(item.getName().equalsIgnoreCase(itemName)) {
+							MenuItem cItem = new MenuItem(itemName, item.getPrice());
+							cItem.setCount(Integer.parseInt(strings[i+1]));
+							c.addItem(cItem);
+							break;
+						}
 					}
 				}
+				customerList.add(c);
 			}
-			customerList.add(c);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 	
 	private void customerButtonAction(ActionEvent e) {
-		JButton btn = (JButton) e.getSource();
-		int customerNo = Integer.parseInt(btn.getText());
-		CustomerPanel cPanel = new CustomerPanel(customerList.get(customerNo-1), menu.getMenuList());
-		cPanel.setVisible(true);
+		try {
+			JButton btn = (JButton) e.getSource();
+			int customerNo = Integer.parseInt(btn.getText());
+			CustomerPanel cPanel = new CustomerPanel(customerList.get(customerNo-1), menu.getMenuList());
+			cPanel.setVisible(true);
+		} catch (Exception e2) {
+			JOptionPane.showMessageDialog(null,e2,"Hata",0);
+		}
 	}
 }

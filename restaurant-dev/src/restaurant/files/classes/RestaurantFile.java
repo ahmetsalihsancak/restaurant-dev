@@ -11,9 +11,8 @@ public class RestaurantFile {
 	}
 	
 	private void createFile(String name) {
-
-		file = new File(name);
 		try {
+			file = new File(name);
 			if (!file.exists()) {
 				file.createNewFile();
 				System.out.println("dosya oluþtu	" + file.getName());

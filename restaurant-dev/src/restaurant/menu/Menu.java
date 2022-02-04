@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class Menu {
 	
 	private List<MenuItem> icecekList;
@@ -36,7 +38,7 @@ public class Menu {
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 }

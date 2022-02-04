@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class CustomerFile {
 
 	private File file;
@@ -17,9 +19,8 @@ public class CustomerFile {
 	}
 	
 	private void createFile(String name) {
-
-		file = new File(name);
 		try {
+			file = new File(name);
 			if (!file.exists()) {
 				file.createNewFile();
 				System.out.println("dosya oluþtu	" + file.getName());
@@ -42,8 +43,7 @@ public class CustomerFile {
 			}
 			System.out.println(file.getAbsolutePath());
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class CustomerFile {
 			}
 			scanner.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class CustomerFile {
 			}
 			writer.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 	

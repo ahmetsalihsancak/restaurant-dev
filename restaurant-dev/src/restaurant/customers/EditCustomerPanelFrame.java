@@ -54,11 +54,15 @@ public class EditCustomerPanelFrame extends JFrame {
 		JButton btnNewButton = new JButton("Onayla");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				customer.updateName(textField.getText());
-				CustomerPanel.setCustomerText(customer);
-				CustomerPanel.setLabel(customer.getName());
-				customer.updateLabel(customer.getName());
-				setTitle(customer.getName());
+				try {
+					customer.updateName(textField.getText());
+					CustomerPanel.setCustomerText(customer);
+					CustomerPanel.setLabel(customer.getName());
+					customer.updateLabel(customer.getName());
+					setTitle(customer.getName());
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null,e2,"Hata",0);
+				}
 			}
 		});
 		btnNewButton.setBounds(315, 11, 89, 35);
@@ -67,11 +71,15 @@ public class EditCustomerPanelFrame extends JFrame {
 		btnNewButton_1 = new JButton("Masa \u0130smini S\u0131f\u0131rla");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				customer.updateName("Masa " + customer.getNo());
-				CustomerPanel.setCustomerText(customer);
-				CustomerPanel.setLabel(customer.getName());
-				customer.updateLabel(customer.getName());
-				setTitle(customer.getName());
+				try {
+					customer.updateName("Masa " + customer.getNo());
+					CustomerPanel.setCustomerText(customer);
+					CustomerPanel.setLabel(customer.getName());
+					customer.updateLabel(customer.getName());
+					setTitle(customer.getName());
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null,e2,"Hata",0);
+				}
 			}
 		});
 		btnNewButton_1.setBounds(125, 55, 142, 23);

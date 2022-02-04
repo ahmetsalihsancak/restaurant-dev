@@ -32,6 +32,7 @@ public class EditCustomerPanelFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setTitle(customer.getName() + " Ýsim Düzenlemesi");
+		setResizable(false);
 		
 		try {
 			imageFileName = MainWindow.getImageFileName();

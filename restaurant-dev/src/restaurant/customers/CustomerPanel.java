@@ -46,6 +46,7 @@ public class CustomerPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setResizable(false);
 		
 		try {
 			imageFileName = MainWindow.getImageFileName();

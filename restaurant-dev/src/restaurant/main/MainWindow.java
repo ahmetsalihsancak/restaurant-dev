@@ -79,6 +79,7 @@ public class MainWindow {
 		frame.setBounds(100, 100, 660, 660);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 		
 		try {
 			frame.setIconImage(ImageIO.read(new File(imageFileName)));

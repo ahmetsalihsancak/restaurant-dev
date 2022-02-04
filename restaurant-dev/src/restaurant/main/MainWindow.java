@@ -298,6 +298,10 @@ public class MainWindow {
 		return imageFileName;
 	}
 	
+	public static ImageIcon getImageIcon() {
+		return icon;
+	}
+	
 	private void fillTableModel(DefaultTableModel tableModel) {
 		for (int i = 0; i < menu.getMenuList().size(); i++) {
 			String name = menu.getMenuList().get(i).getName();

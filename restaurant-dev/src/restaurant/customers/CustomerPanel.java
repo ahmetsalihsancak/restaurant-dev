@@ -53,7 +53,7 @@ public class CustomerPanel extends JFrame {
 	 */
 	public CustomerPanel(Customer customer, List<MenuItem> menuList) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 540, 450);
+		setBounds(100, 100, 570, 382);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,12 +71,12 @@ public class CustomerPanel extends JFrame {
 		customerFile = MainWindow.getCustomerFile();
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 504, 389);
+		panel.setBounds(10, 11, 534, 324);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 162, 230, 187);
+		scrollPane.setBounds(10, 62, 244, 221);
 		panel.add(scrollPane);
 		
 		table = new JTable();
@@ -90,18 +90,19 @@ public class CustomerPanel extends JFrame {
 		
 		lbl1 = new JLabel(customer.getName());
 		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lbl1.setBounds(10, 11, 262, 40);
+		lbl1.setBounds(10, 11, 384, 40);
 		panel.add(lbl1);
 		
 		JLabel lblPrice = new JLabel("Toplam \u00DCcret: ");
+		lblPrice.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPrice.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblPrice.setBounds(10, 352, 262, 26);
+		lblPrice.setBounds(10, 287, 244, 26);
 		panel.add(lblPrice);
 		
 		updatePrice(lblPrice, customer.getTotalPrice());
 		
 		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(250, 196, 135, 22);
+		comboBox.setBounds(270, 96, 145, 22);
 		panel.add(comboBox);
 		fillMenuList(comboBox, menuList);
 		
@@ -111,7 +112,7 @@ public class CustomerPanel extends JFrame {
 				addButtonAction(comboBox, customer, lblPrice, menuList);
 			}
 		});
-		btnAdd.setBounds(395, 262, 99, 23);
+		btnAdd.setBounds(425, 185, 99, 23);
 		panel.add(btnAdd);
 		
 		JButton btnRemove = new JButton("\u00DCr\u00FCn\u00FC Sil");
@@ -120,7 +121,7 @@ public class CustomerPanel extends JFrame {
 				removeButtonAction(comboBox, customer, lblPrice);
 			}
 		});
-		btnRemove.setBounds(395, 296, 99, 23);
+		btnRemove.setBounds(425, 219, 99, 23);
 		panel.add(btnRemove);
 		
 		textFieldCount = new JTextField();
@@ -133,11 +134,11 @@ public class CustomerPanel extends JFrame {
 			}
 		});
 		textFieldCount.setText("1");
-		textFieldCount.setBounds(395, 197, 99, 20);
+		textFieldCount.setBounds(425, 96, 99, 20);
 		panel.add(textFieldCount);
 		textFieldCount.setColumns(10);
 		
-		JButton btnRemoveAll = new JButton("Masay\u0131 S\u0131f\u0131rla");
+		JButton btnRemoveAll = new JButton("S\u0131f\u0131rla");
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				customer.updateName("Masa " + customer.getNo());
@@ -150,7 +151,7 @@ public class CustomerPanel extends JFrame {
 				setCustomerText(customer);
 			}
 		});
-		btnRemoveAll.setBounds(380, 356, 114, 23);
+		btnRemoveAll.setBounds(425, 253, 99, 23);
 		panel.add(btnRemoveAll);
 		
 		JButton btnRemoveAllSelectedItem = new JButton("Se\u00E7ili \u00DCr\u00FCn\u00FCn Hepsini Sil");
@@ -169,20 +170,21 @@ public class CustomerPanel extends JFrame {
 				setCustomerText(customer);
 			}
 		});
-		btnRemoveAllSelectedItem.setBounds(250, 162, 244, 23);
+		btnRemoveAllSelectedItem.setBounds(270, 62, 254, 23);
 		panel.add(btnRemoveAllSelectedItem);
 		
-		JButton btnChangeCustomerName = new JButton("\u0130smini De\u011Fi\u015Ftir");
+		JButton btnChangeCustomerName = new JButton("Masan\u0131n \u0130smini De\u011Fi\u015Ftir");
 		btnChangeCustomerName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditCustomerPanelFrame edit = new EditCustomerPanelFrame(customer);
 				edit.setVisible(true);
 			}
 		});
-		btnChangeCustomerName.setBounds(250, 356, 120, 23);
+		btnChangeCustomerName.setBounds(270, 291, 254, 22);
 		panel.add(btnChangeCustomerName);
 		
 		JButton btnIncrease = new JButton("+");
+		btnIncrease.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnIncrease.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int count = Integer.parseInt(textFieldCount.getText());
@@ -190,10 +192,11 @@ public class CustomerPanel extends JFrame {
 				textFieldCount.setText(String.valueOf(count));
 			}
 		});
-		btnIncrease.setBounds(395, 228, 45, 23);
+		btnIncrease.setBounds(425, 129, 45, 45);
 		panel.add(btnIncrease);
 		
 		JButton btnDecrease = new JButton("-");
+		btnDecrease.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnDecrease.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int count = Integer.parseInt(textFieldCount.getText());
@@ -201,8 +204,13 @@ public class CustomerPanel extends JFrame {
 				textFieldCount.setText(String.valueOf(count));
 			}
 		});
-		btnDecrease.setBounds(449, 228, 45, 23);
+		btnDecrease.setBounds(479, 129, 45, 45);
 		panel.add(btnDecrease);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(270, 129, 145, 154);
+		panel.add(panel_1);
+		panel_1.add(new JLabel(MainWindow.getImageIcon()));
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel, Customer customer) {

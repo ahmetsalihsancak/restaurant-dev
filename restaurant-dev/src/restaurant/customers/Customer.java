@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
+import restaurant.files.PaymentData;
 import restaurant.menu.MenuItem;
 
 public class Customer {
@@ -14,6 +15,7 @@ public class Customer {
 	private List<MenuItem> itemList;
 	private JLabel label;
 	private float totalPrice;
+	private PaymentData payment;
 	
 	public Customer(int no, String name) {
 		this.no = no;
@@ -25,6 +27,7 @@ public class Customer {
 		itemList = new ArrayList<MenuItem>();
 		totalPrice = 0;
 		label = null;
+		payment = new PaymentData();
 	}
 	
 	private void updatePrice() {
@@ -49,6 +52,10 @@ public class Customer {
 	
 	public void updateLabel(String text) {
 		label.setText(text);
+	}
+	
+	public PaymentData getPayment() {
+		return payment;
 	}
 	
 	public String getName() {

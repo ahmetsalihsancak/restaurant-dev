@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import restaurant.customers.Customer;
 import restaurant.customers.CustomerPanel;
 import restaurant.files.classes.CustomerFile;
+import restaurant.files.classes.MoneyFile;
 import restaurant.files.classes.RestaurantFile;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
@@ -34,6 +36,7 @@ public class MainWindow {
 	private DefaultTableModel tableModel;
 	private RestaurantFile menuFile;
 	private static CustomerFile customerFile;
+	private static MoneyFile moneyFile;
 	private static ImageIcon icon;
 	private static String imageFileName;
 	private Menu menu;
@@ -63,6 +66,9 @@ public class MainWindow {
 	public MainWindow() {
 		menuFile = new RestaurantFile("menu.txt");
 		customerFile = new CustomerFile("customer.txt");
+		Calendar c = Calendar.getInstance();
+		String moneyFileName = (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR) + ".txt";
+		moneyFile = new MoneyFile(moneyFileName);
 		menu = new Menu(menuFile.getFile());
 		customerList = new ArrayList<Customer>();
 		labelList = new ArrayList<>();
@@ -100,6 +106,7 @@ public class MainWindow {
 		panel.add(scrollPane_1);
 		
 		table = new JTable();
+		table.setEnabled(false);
 		String[] header = {"\u00DCr\u00FCn", "Fiyat"};
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(header);

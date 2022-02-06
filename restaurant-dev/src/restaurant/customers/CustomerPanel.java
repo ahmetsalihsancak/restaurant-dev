@@ -25,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 import restaurant.files.classes.CustomerFile;
 import restaurant.main.MainWindow;
 import restaurant.menu.MenuItem;
+import restaurant.menu.MenuItem.paymentType_e;
+import javax.swing.DefaultComboBoxModel;
 
 public class CustomerPanel extends JFrame {
 
@@ -69,6 +71,8 @@ public class CustomerPanel extends JFrame {
 		panel.add(scrollPane);
 		
 		table = new JTable();
+		table.setEnabled(false);
+		table.setRowSelectionAllowed(false);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		scrollPane.setViewportView(table);
 		String[] header = {"\u00DCr\u00FCn", "Fiyat", "Adet"};
@@ -95,7 +99,7 @@ public class CustomerPanel extends JFrame {
 		panel.add(comboBox);
 		fillMenuList(comboBox, menuList);
 		
-		JButton btnAdd = new JButton("\u00DCr\u00FCn\u00FC Ekle");
+		JButton btnAdd = new JButton("Ekle");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -105,10 +109,10 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnAdd.setBounds(425, 185, 99, 23);
+		btnAdd.setBounds(270, 62, 66, 23);
 		panel.add(btnAdd);
 		
-		JButton btnRemove = new JButton("\u00DCr\u00FCn\u00FC Sil");
+		JButton btnRemove = new JButton("Sil");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -118,7 +122,7 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnRemove.setBounds(425, 219, 99, 23);
+		btnRemove.setBounds(349, 62, 66, 23);
 		panel.add(btnRemove);
 		
 		textFieldCount = new JTextField();
@@ -131,7 +135,7 @@ public class CustomerPanel extends JFrame {
 			}
 		});
 		textFieldCount.setText("1");
-		textFieldCount.setBounds(425, 96, 99, 20);
+		textFieldCount.setBounds(425, 96, 99, 22);
 		panel.add(textFieldCount);
 		textFieldCount.setColumns(10);
 		
@@ -152,33 +156,10 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnRemoveAll.setBounds(425, 253, 99, 23);
+		btnRemoveAll.setBounds(425, 291, 99, 23);
 		panel.add(btnRemoveAll);
 		
-		JButton btnRemoveAllSelectedItem = new JButton("Se\u00E7ili \u00DCr\u00FCn\u00FCn Hepsini Sil");
-		btnRemoveAllSelectedItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					String itemName = comboBox.getSelectedItem().toString();
-					for (MenuItem customerItem : customer.getItemList()) {
-						if (customerItem.getName().equalsIgnoreCase(itemName) && customerItem.getCount() > 0) {
-							customerItem.setCount(0);
-						} else {
-							JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
-						}
-					}
-					fillTableModel(tableModel, customer);
-					updatePrice(lblPrice, customer.getTotalPrice());
-					setCustomerText(customer);
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null,e2,"Hata",0);
-				}
-			}
-		});
-		btnRemoveAllSelectedItem.setBounds(270, 62, 254, 23);
-		panel.add(btnRemoveAllSelectedItem);
-		
-		JButton btnChangeCustomerName = new JButton("Masan\u0131n \u0130smini De\u011Fi\u015Ftir");
+		JButton btnChangeCustomerName = new JButton("\u0130sim De\u011Fi\u015Ftir");
 		btnChangeCustomerName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -189,7 +170,7 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnChangeCustomerName.setBounds(270, 291, 254, 22);
+		btnChangeCustomerName.setBounds(404, 11, 120, 40);
 		panel.add(btnChangeCustomerName);
 		
 		JButton btnIncrease = new JButton("+");
@@ -205,7 +186,7 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnIncrease.setBounds(425, 129, 45, 45);
+		btnIncrease.setBounds(425, 62, 45, 23);
 		panel.add(btnIncrease);
 		
 		JButton btnDecrease = new JButton("-");
@@ -221,13 +202,28 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnDecrease.setBounds(479, 129, 45, 45);
+		btnDecrease.setBounds(479, 62, 45, 23);
 		panel.add(btnDecrease);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(270, 129, 145, 154);
 		panel.add(panel_1);
 		panel_1.add(new JLabel(MainWindow.getImageIcon()));
+
+		JComboBox<String> comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(paymentType_e.values()));
+		comboBox_1.setBounds(425, 129, 99, 22);
+		panel.add(comboBox_1);
+		
+		JButton btnPayment = new JButton("\u00D6deme Al");
+		btnPayment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paymentButtonAction(comboBox, comboBox_1, customer, lblPrice, menuList);
+			}
+		});
+		btnPayment.setBounds(425, 260, 99, 23);
+		panel.add(btnPayment);
+		
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel, Customer customer) {
@@ -250,6 +246,45 @@ public class CustomerPanel extends JFrame {
 	
 	private void updatePrice(JLabel lblPrice, float price) {
 		lblPrice.setText("Toplam \u00DCcret: " + price +" TL");
+	}
+	
+	private void paymentButtonAction(JComboBox<String> comboBox, JComboBox<paymentType_e> comboBox2, Customer customer, JLabel lblPrice, List<MenuItem> menuList) {
+		boolean itemFounded = false;
+		String itemName = comboBox.getSelectedItem().toString();
+		for (MenuItem menuItem : menuList) {
+			if (menuItem.getName().equalsIgnoreCase(itemName)) {
+				for (MenuItem customerItem : customer.getItemList()) {
+					if (customerItem.getName().equalsIgnoreCase(itemName)) {
+						itemFounded = true;
+						int oldCount = customerItem.getCount();
+						int itemCount = Integer.parseInt(textFieldCount.getText());
+						int newCount = oldCount - itemCount;
+						removeButtonAction(comboBox, customer, lblPrice);
+						if(oldCount > 0 && newCount > 0) {
+							if(itemCount > 0) {
+								boolean pItemFounded = false;
+								for (MenuItem paymentItem : customer.getPayment().getItemList()) {
+									if (customerItem.getName().equalsIgnoreCase(paymentItem.getName())) {
+										
+									} else {
+										MenuItem newPaymentItem = customerItem;
+										newPaymentItem.setCount(itemCount);
+										newPaymentItem.setPaymentType((paymentType_e)comboBox2.getSelectedItem());
+									}
+								}
+							}
+							JOptionPane.showMessageDialog(null,textFieldCount.getText() + " adet " + itemName + " ürününün ödemesi baþarýlý.","Bilgi",1);
+						}
+						break;
+					} else {
+						itemFounded = false;
+					}
+				}
+				if (!itemFounded) {
+					JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürünün ödemesi alýnýyor.","Hata",0);
+				}
+			}
+		}
 	}
 	
 	private void addButtonAction(JComboBox<String> comboBox, Customer customer, JLabel lblPrice, List<MenuItem> menuList) {
@@ -281,6 +316,7 @@ public class CustomerPanel extends JFrame {
 	
 	private void removeButtonAction(JComboBox<String> comboBox, Customer customer, JLabel lblPrice) {
 		String itemName = comboBox.getSelectedItem().toString();
+		boolean showed = false;
 		for (MenuItem customerItem : customer.getItemList()) {
 			if (customerItem.getName().equalsIgnoreCase(itemName)) {
 				int oldCount = customerItem.getCount();
@@ -289,11 +325,17 @@ public class CustomerPanel extends JFrame {
 					customerItem.setCount(oldCount - Integer.parseInt(textFieldCount.getText()));
 				} else {
 					if(customerItem.getCount() != 0)JOptionPane.showMessageDialog(null,"Ürün sayýsý 0'dan küçük olamaz.","Hata",0);
-					else JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+					else if(!showed) {
+						JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+						showed = true;
+					}
 				}
 				break;
 			}
-			JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+			else if(!showed) {
+				JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+				showed = true;
+			}
 		}
 		fillTableModel(tableModel, customer);
 		updatePrice(lblPrice, customer.getTotalPrice());

@@ -1,5 +1,5 @@
-1,Masa 1,Cay,2,Soda,1
-2,Masa 2,Cay,0
+1,Masa 1,Cay,1,Latte,1,Kahve,1,Cheescake,1
+2,Masa 2
 3,Masa 3
 4,Masa 4
 5,Masa 5

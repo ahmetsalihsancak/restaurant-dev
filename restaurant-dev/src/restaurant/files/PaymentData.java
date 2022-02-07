@@ -7,10 +7,12 @@ import restaurant.menu.MenuItem;
 
 public class PaymentData {
 
-	List<MenuItem> itemList;
+	private List<MenuItem> itemList;
+	private float totalPayment;
 	
 	public PaymentData() {
 		itemList = new ArrayList<MenuItem>();
+		totalPayment = 0;
 	}
 	
 	public void addItem(MenuItem item) {
@@ -19,6 +21,14 @@ public class PaymentData {
 	
 	public List<MenuItem> getItemList(){
 		return itemList;
+	}
+	
+	public float getTotalPayment() {
+		totalPayment = 0;
+		for (MenuItem menuItem : itemList) {
+			totalPayment = totalPayment + (menuItem.getPrice() * menuItem.getCount());
+		}
+		return totalPayment;
 	}
 	
 }

@@ -292,11 +292,33 @@ public class CustomerPanel extends JFrame {
 		panel_2.add(textFieldCount_payment);
 			
 		JButton btnIncrease_payment = new JButton("+");
+		btnIncrease_payment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int count = Integer.parseInt(textFieldCount_payment.getText());
+					count++;
+					textFieldCount_payment.setText(String.valueOf(count));
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+				}
+			}
+		});
 		btnIncrease_payment.setBounds(419, 11, 45, 23);
 		btnIncrease_payment.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel_2.add(btnIncrease_payment);
 				
 		JButton btnDecrease_payment = new JButton("-");
+		btnDecrease_payment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int count = Integer.parseInt(textFieldCount_payment.getText());
+					if(count > 1) count--;
+					textFieldCount_payment.setText(String.valueOf(count));
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null,e2,"Hata",0);
+				}
+			}
+		});
 		btnDecrease_payment.setBounds(474, 11, 45, 23);
 		btnDecrease_payment.setFont(new Font("Tahoma", Font.BOLD, 17));
 		panel_2.add(btnDecrease_payment);
@@ -315,6 +337,12 @@ public class CustomerPanel extends JFrame {
 		table_paymentType.setModel(tableModelPayment);
 		
 		JButton btnGetPayment = new JButton("\u00D6deme Al");
+		btnGetPayment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(MainWindow.getMoneyFile().file.getAbsolutePath());
+				MainWindow.getMoneyFile().writeToMoneyFile(customer.getPayment().getItemList());
+			}
+		});
 		btnGetPayment.setBounds(419, 78, 99, 23);
 		panel_2.add(btnGetPayment);
 		

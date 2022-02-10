@@ -37,6 +37,7 @@ public class Menu {
 					counter = 0;
 				}
 			}
+			scanner.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}

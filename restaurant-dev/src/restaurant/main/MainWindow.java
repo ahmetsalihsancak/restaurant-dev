@@ -28,6 +28,8 @@ import restaurant.files.classes.MoneyFile;
 import restaurant.files.classes.RestaurantFile;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow {
 
@@ -39,7 +41,7 @@ public class MainWindow {
 	private static MoneyFile moneyFile;
 	private static ImageIcon icon;
 	private static String imageFileName;
-	private Menu menu;
+	private static Menu menu;
 	
 	private List<Customer> customerList;
 	private List<JLabel> labelList;
@@ -68,8 +70,8 @@ public class MainWindow {
 		customerFile = new CustomerFile("customer.txt");
 		Calendar c = Calendar.getInstance();
 		String moneyFileName = (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR) + ".txt";
-		moneyFile = new MoneyFile(moneyFileName);
 		menu = new Menu(menuFile.getFile());
+		moneyFile = new MoneyFile(moneyFileName);
 		customerList = new ArrayList<Customer>();
 		labelList = new ArrayList<>();
 		imageFileName = "logo_144x144.png";
@@ -289,6 +291,12 @@ public class MainWindow {
 		frame.getContentPane().add(lblMenu);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
 		panel_1.setBounds(20, 11, 144, 155);
 		frame.getContentPane().add(panel_1);
 		panel_1.add(new JLabel(icon));
@@ -308,6 +316,14 @@ public class MainWindow {
 	
 	public static ImageIcon getImageIcon() {
 		return icon;
+	}
+	
+	public static Menu getMenu() {
+		return menu;
+	}
+	
+	public static MoneyFile getMoneyFile() {
+		return moneyFile;
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel) {

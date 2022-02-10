@@ -28,6 +28,8 @@ import restaurant.files.classes.MoneyFile;
 import restaurant.files.classes.RestaurantFile;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
+import restaurant.money.MoneyFrame;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -294,7 +296,8 @@ public class MainWindow {
 		panel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				MoneyFrame moneyFrame = new MoneyFrame();
+				moneyFrame.setVisible(true);
 			}
 		});
 		panel_1.setBounds(20, 11, 144, 155);

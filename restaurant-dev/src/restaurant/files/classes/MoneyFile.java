@@ -16,16 +16,16 @@ import restaurant.menu.MenuItem;
 
 public class MoneyFile {
 	
-	public File file;
-	private List<String> fileLineList = new ArrayList<String>();
-	private List<String[]> fileLineListArray = new ArrayList<String[]>();
-	private String filePath;
+	public static File file;
+	private static List<String> fileLineList = new ArrayList<String>();
+	private static List<String[]> fileLineListArray = new ArrayList<String[]>();
+	private static String filePath;
 	
 	public MoneyFile(String fileName) {
-		createFile1(fileName);
+		createFile(fileName);
 	}
 	
-	private void createFile1(String name) {
+	private void createFile(String name) {
 		try {
 			filePath = "money/" + name;
 			file = new File(filePath);
@@ -51,6 +51,7 @@ public class MoneyFile {
 				System.out.println("dosya var	" + file.getName());
 			}
 			System.out.println(file.getAbsolutePath());
+			readFileScannerLine(file);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
@@ -62,7 +63,6 @@ public class MoneyFile {
 			int year = c.get(Calendar.YEAR);
 			int month = c.get(Calendar.MONTH) + 1;
 			int day = c.get(Calendar.DATE);
-			String text = day + "," + month + "," + year;
 			
 			fileLineList.clear();
 			fileLineListArray.clear();
@@ -113,33 +113,7 @@ public class MoneyFile {
 			e.printStackTrace();
 		}
 	}
-	
-	private void createFile(String name) {
-		try {
-			String filePath = "money/" + name;
-			file = new File(filePath);
-			Calendar c = Calendar.getInstance();
-			System.out.println(c.getTime());
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH) + 1;
-			System.out.println(year + "  " + month + "  " + c.get(Calendar.DATE));
-			if (!file.exists()) {
-				file.createNewFile();
-				System.out.println("dosya oluþtu	" + file.getName());
-				FileWriter writer = new FileWriter(filePath);
-				for (int i = 0; i < c.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-					writer.write((i+1) + "-" + month + "-" + year +",\n");
-				}
-				writer.close();
-			} else {
-				System.out.println("dosya var	" + file.getName());
-			}
-			System.out.println(file.getAbsolutePath());
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,e,"Hata",0);
-		}
-	}
-	
+
 	public File getFile() {
 		return file;
 	}

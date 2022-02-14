@@ -27,7 +27,12 @@ import restaurant.files.classes.CustomerFile;
 import restaurant.files.classes.MoneyFile;
 import restaurant.files.classes.MoneyFileLine;
 import restaurant.files.classes.RestaurantFile;
+import restaurant.files.classes.excell.CustomerFileExcell;
+import restaurant.files.classes.excell.ExportExcell;
+import restaurant.files.classes.excell.MoneyFileLineExcell;
+import restaurant.files.classes.excell.RestaurantFileExcell;
 import restaurant.menu.Menu;
+import restaurant.menu.MenuExcell;
 import restaurant.menu.MenuItem;
 import restaurant.money.MoneyFrame;
 
@@ -39,12 +44,18 @@ public class MainWindow {
 	private JFrame frame;
 	private JTable table;
 	private DefaultTableModel tableModel;
-	private RestaurantFile menuFile;
-	private static CustomerFile customerFile;
-	private static MoneyFileLine moneyFile;
+
+	private RestaurantFileExcell menuFileExcell;
+	
+	private static CustomerFileExcell customerFileExcell;
+	
+	private static MoneyFileLineExcell moneyFileExcell;
+	
 	private static ImageIcon icon;
 	private static String imageFileName;
-	private static Menu menu;
+	
+	private static MenuExcell menuExcell;
+	
 	private static Calendar calendar;
 	private static File[] listOfMoneyFiles;
 	
@@ -71,12 +82,16 @@ public class MainWindow {
 	 * Create the application.
 	 */
 	public MainWindow() {
-		menuFile = new RestaurantFile("menu.txt");
-		customerFile = new CustomerFile("customer.txt");
+		menuFileExcell = new RestaurantFileExcell("menu.xls");
+		
+		customerFileExcell = new CustomerFileExcell("customer.xls");
+		
 		calendar = Calendar.getInstance();
-		String moneyFileName = (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + ".txt";
-		menu = new Menu(menuFile.getFile());
-		moneyFile = new MoneyFileLine(moneyFileName);
+		
+		menuExcell = new MenuExcell(menuFileExcell.getFile());
+		
+		String moneyFileName = (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + ".xls";
+		moneyFileExcell = new MoneyFileLineExcell(moneyFileName);
 		
 		File folder = new File("money/");
 		listOfMoneyFiles = folder.listFiles();
@@ -85,6 +100,7 @@ public class MainWindow {
 		labelList = new ArrayList<>();
 		imageFileName = "logo_144x144.png";
 		icon = new ImageIcon(imageFileName);
+		
 		initialize();
 	}
 
@@ -311,13 +327,14 @@ public class MainWindow {
 		frame.getContentPane().add(panel_1);
 		panel_1.add(new JLabel(icon));
 		
-		File file = new File("customer.txt");
-		customerFile.readFileScannerLine(file);
-		fillCustomerList(customerList, customerFile.getFileLinesSplitted());
+		//File file = new File("customer.txt");
+		File file = new File("customer.xls");
+		customerFileExcell.readFileScannerLine(file);
+		fillCustomerList(customerList, customerFileExcell.getFileLinesSplitted());
 	}
 	
-	public static CustomerFile getCustomerFile() {
-		return customerFile;
+	public static CustomerFileExcell getCustomerFileExcell() {
+		return customerFileExcell;
 	}
 	
 	public static String getImageFileName() {
@@ -328,12 +345,12 @@ public class MainWindow {
 		return icon;
 	}
 	
-	public static Menu getMenu() {
-		return menu;
+	public static MenuExcell getMenuExcell() {
+		return menuExcell;
 	}
 	
-	public static MoneyFileLine getMoneyFile() {
-		return moneyFile;
+	public static MoneyFileLineExcell getMoneyFileExcell() {
+		return moneyFileExcell;
 	}
 	
 	public static Calendar getCalendar() {
@@ -346,9 +363,9 @@ public class MainWindow {
 	
 	private void fillTableModel(DefaultTableModel tableModel) {
 		try {
-			for (int i = 0; i < menu.getMenuList().size(); i++) {
-				String name = menu.getMenuList().get(i).getName();
-				float price = menu.getMenuList().get(i).getPrice();
+			for (int i = 0; i < menuExcell.getMenuList().size(); i++) {
+				String name = menuExcell.getMenuList().get(i).getName();
+				float price = menuExcell.getMenuList().get(i).getPrice();
 				tableModel.addRow(new Object[]{name,price});
 			}
 		} catch (Exception e) {
@@ -366,7 +383,7 @@ public class MainWindow {
 				c.addLabel(labelList.get(no-1));
 				for (int i = 2; i < strings.length; i=i+2) {
 					String itemName = strings[i];
-					for (MenuItem item : menu.getMenuList()) {
+					for (MenuItem item : menuExcell.getMenuList()) {
 						if(item.getName().equalsIgnoreCase(itemName)) {
 							MenuItem cItem = new MenuItem(itemName, item.getPrice());
 							cItem.setCount(Integer.parseInt(strings[i+1]));
@@ -386,7 +403,7 @@ public class MainWindow {
 		try {
 			JButton btn = (JButton) e.getSource();
 			int customerNo = Integer.parseInt(btn.getText());
-			CustomerPanel cPanel = new CustomerPanel(customerList.get(customerNo-1), menu.getMenuList());
+			CustomerPanel cPanel = new CustomerPanel(customerList.get(customerNo-1), menuExcell.getMenuList());
 			cPanel.setVisible(true);
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null,e2,"Hata",0);

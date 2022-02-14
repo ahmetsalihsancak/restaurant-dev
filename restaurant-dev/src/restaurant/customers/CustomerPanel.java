@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import restaurant.files.classes.CustomerFile;
+import restaurant.files.classes.excell.CustomerFileExcell;
 import restaurant.main.MainWindow;
 import restaurant.menu.MenuItem;
 import restaurant.files.PaymentData.paymentType_e;
@@ -37,7 +38,7 @@ public class CustomerPanel extends JFrame {
 	private DefaultTableModel tableModelPayment;
 	private JTable table;
 	private JTextField textFieldCount;
-	private static CustomerFile customerFile;
+	private static CustomerFileExcell customerFileExcell;
 	private static JLabel lbl1;
 	private String imageFileName;
 	private JTextField textFieldCount_payment;
@@ -67,7 +68,7 @@ public class CustomerPanel extends JFrame {
 		
 		setTitle(customer.getName());
 		customer.updateLabel(customer.getName());
-		customerFile = MainWindow.getCustomerFile();
+		customerFileExcell = MainWindow.getCustomerFileExcell();
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 11, 534, 324);
@@ -216,11 +217,6 @@ public class CustomerPanel extends JFrame {
 		panel.add(panel_1);
 		panel_1.add(new JLabel(MainWindow.getImageIcon()));
 		
-		JComboBox<paymentType_e> comboBoxPaymentType = new JComboBox();
-		comboBoxPaymentType.setModel(new DefaultComboBoxModel(paymentType_e.values()));
-		comboBoxPaymentType.setBounds(425, 129, 99, 22);
-		panel.add(comboBoxPaymentType);
-		
 		/* TAB 2 : PAYMENT */
 		
 		JPanel panel_2 = new JPanel();
@@ -258,13 +254,18 @@ public class CustomerPanel extends JFrame {
 		JButton btnAdd_payment = new JButton("Ekle");
 		btnAdd_payment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addButtonAction_Payment(comboBox_item_payment, customer, lblPrice_paymentMoney, textFieldCount);
+				addButtonAction_Payment(comboBox_item_payment, customer, lblPrice_paymentMoney, textFieldCount_payment);
 			}
 		});
 		btnAdd_payment.setBounds(264, 11, 66, 23);
 		panel_2.add(btnAdd_payment);
 				
 		JButton btnRemove_payment = new JButton("Sil");
+		btnRemove_payment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeButtonAction_Payment(comboBox_item_payment, customer, lblPrice_paymentMoney, textFieldCount_payment);
+			}
+		});
 		btnRemove_payment.setBounds(343, 11, 66, 23);
 		panel_2.add(btnRemove_payment);
 				
@@ -331,9 +332,27 @@ public class CustomerPanel extends JFrame {
 		JButton btnGetPayment = new JButton("\u00D6deme Al");
 		btnGetPayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(MainWindow.getMoneyFile().file.getAbsolutePath());
-				customer.getPayment().setPaymentType((paymentType_e) comboBoxPaymentType_payment.getSelectedItem());
-				MainWindow.getMoneyFile().writeToMoneyFile(customer.getPayment());
+				if (customer.getPayment().getItemList().size() > 0) {
+					System.out.println(MainWindow.getMoneyFileExcell().file.getAbsolutePath());
+					customer.getPayment().setPaymentType((paymentType_e) comboBoxPaymentType_payment.getSelectedItem());
+					MainWindow.getMoneyFileExcell().writeToMoneyFile(customer.getPayment());
+					for (MenuItem customerItem : customer.getItemList()) {
+						for (MenuItem paymentItem : customer.getPayment().getItemList()) {
+							if (customerItem.getName().equalsIgnoreCase(paymentItem.getName())) {
+								customerItem.setCount(customerItem.getCount() - paymentItem.getCount());
+							}
+						}
+					}
+					customer.getPayment().getItemList().clear();
+					fillTableModelPayment(tableModelPayment, customer);
+					fillTableModel(tableModel, customer);
+					updatePrice(lblPrice, customer.getTotalPrice());
+					updatePrice(lblPrice_payment, customer.getTotalPrice());
+					updatePaymentPrice(lblPrice_paymentMoney, customer.getPayment().getTotalPayment());
+					setCustomerText(customer);
+				} else {
+					JOptionPane.showMessageDialog(null,"Ödeme alaný boþ.","Hata",0);
+				}
 			}
 		});
 		btnGetPayment.setBounds(419, 78, 99, 23);
@@ -440,8 +459,14 @@ public class CustomerPanel extends JFrame {
 					if (paymentItem.getName().equalsIgnoreCase(itemName)) {
 						itemFounded = true;
 						int oldCount = paymentItem.getCount();
-						paymentItem.setCount(oldCount + Integer.parseInt(textFieldCount.getText()));
-						break;
+						int newCount = oldCount + Integer.parseInt(textFieldCount.getText());
+						if (newCount > customerItem.getCount()) {
+							JOptionPane.showMessageDialog(null,"Bu ürün bu masada toplam " + customerItem.getCount() + " adet bulunmaktadýr.","Hata",0);
+							break;
+						} else {
+							paymentItem.setCount(newCount);
+							break;
+						}
 					}
 					else {
 						itemFounded = false;
@@ -488,16 +513,44 @@ public class CustomerPanel extends JFrame {
 		setCustomerText(customer);
 	}
 	
+	private void removeButtonAction_Payment(JComboBox<String> comboBox, Customer customer, JLabel lblPrice, JTextField textFieldCount) {
+		String itemName = comboBox.getSelectedItem().toString();
+		boolean itemFounded = false;
+		for (MenuItem customerItem : customer.getPayment().getItemList()) {
+			if (customerItem.getName().equalsIgnoreCase(itemName)) {
+				int oldCount = customerItem.getCount();
+				if (oldCount == 0) {
+					JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+					itemFounded = true;
+					break;
+				}
+				int newCount = oldCount - Integer.parseInt(textFieldCount.getText());
+				if (newCount >= 0) {
+					customerItem.setCount(oldCount - Integer.parseInt(textFieldCount.getText()));
+					itemFounded = true;
+				} else {
+					if(customerItem.getCount() != 0)JOptionPane.showMessageDialog(null,"Ürün sayýsý 0'dan küçük olamaz.","Hata",0);
+				}
+				break;
+			}
+		}
+		if (!itemFounded) {
+			JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürün siliniyor.","Hata",0);
+		}
+		fillTableModelPayment(tableModelPayment, customer);
+		updatePaymentPrice(lblPrice_paymentMoney, customer.getPayment().getTotalPayment());
+	}
+	
 	public static void setCustomerText(Customer customer) {
-		String first = customer.getNo() + "," + customer.getName();
+		String first = customer.getNo() + "\t" + customer.getName();
 		String items = "";
 		for (int i = 0; i < customer.getItemList().size(); i++) {
 			String itemName = customer.getItemList().get(i).getName();
 			int itemCount = customer.getItemList().get(i).getCount();
-			items = items + "," +itemName + "," + itemCount;
+			items = items + "\t" +itemName + "\t" + itemCount;
 		}
 		String text = first + items;
-		customerFile.writeCustomerToCustomerFile(text, customer.getNo());
+		customerFileExcell.writeCustomerToCustomerFile(text, customer.getNo());
 	}
 	
 	public static void setLabel(String text) {

@@ -13,8 +13,10 @@ import javax.swing.table.DefaultTableModel;
 
 import restaurant.files.classes.MoneyFile;
 import restaurant.files.classes.MoneyFileLine;
+import restaurant.files.classes.excell.MoneyFileLineExcell;
 import restaurant.main.MainWindow;
 import restaurant.menu.Menu;
+import restaurant.menu.MenuExcell;
 import restaurant.menu.MenuItem;
 
 import javax.swing.JTable;
@@ -30,8 +32,8 @@ public class MoneyFrame extends JFrame {
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private JScrollPane scrollPane;
-	private Menu menu;
-	private MoneyFileLine moneyFile;
+	private MenuExcell menuExcell;
+	private MoneyFileLineExcell moneyFileExcell;
 	private File[] listOfMoneyFile;
 	
 	/**
@@ -52,19 +54,19 @@ public class MoneyFrame extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		moneyFile = MainWindow.getMoneyFile();
-		menu = MainWindow.getMenu();
+		moneyFileExcell = MainWindow.getMoneyFileExcell();
+		menuExcell = MainWindow.getMenuExcell();
 		listOfMoneyFile = MainWindow.getListOfMoneyFiles();
 		
-		String[] header = new String[menu.getMenuList().size()*2 + 6];
+		String[] header = new String[menuExcell.getMenuList().size()*2 + 6];
 		header[0] = "Gun";
 		header[1] = "Ay";
 		header[2] = "Yil";
-		header[menu.getMenuList().size()*2 + 3] = "Nakit";
-		header[menu.getMenuList().size()*2 + 4] = "Kart";
-		header[menu.getMenuList().size()*2 + 5] = "Toplam";
-		for (int i = 0; i < menu.getMenuList().size(); i++) {
-			header[i*2+3] = menu.getMenuList().get(i).getName();
+		header[menuExcell.getMenuList().size()*2 + 3] = "Nakit";
+		header[menuExcell.getMenuList().size()*2 + 4] = "Kart";
+		header[menuExcell.getMenuList().size()*2 + 5] = "Toplam";
+		for (int i = 0; i < menuExcell.getMenuList().size(); i++) {
+			header[i*2+3] = menuExcell.getMenuList().get(i).getName();
 		}
 		
 		tableModel = new DefaultTableModel();
@@ -101,7 +103,7 @@ public class MoneyFrame extends JFrame {
 			tableModel.removeRow(i);
 		}
 		File file = new File("money/"+fileName);
-		List<String[]> fileLineSp = moneyFile.getFileScannerLineListSplitted(file);
+		List<String[]> fileLineSp = moneyFileExcell.getFileScannerLineListSplitted(file);
 		System.out.println(fileLineSp.size());
 		for (String[] a : fileLineSp) {
 			tableModel.addRow(a);

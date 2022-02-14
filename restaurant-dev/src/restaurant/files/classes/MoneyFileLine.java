@@ -41,7 +41,7 @@ public class MoneyFileLine {
 				file.createNewFile();
 				FileWriter writer = new FileWriter(filePath);
 				String text = day + "," + month + "," + year;
-				for (MenuItem menuItem : MainWindow.getMenu().getMenuList()) {
+				for (MenuItem menuItem : MainWindow.getMenuExcell().getMenuList()) {
 					text = text + "," + menuItem.getName() + "," + "0";
 				}
 				text = text + ",0,0,0";
@@ -53,7 +53,7 @@ public class MoneyFileLine {
 				readFileScannerLine(file);
 				if (Integer.parseInt(fileLineListArray.get(fileLineListArray.size()-1)[0]) != day) {
 					String text = day + "," + month + "," + year;
-					for (MenuItem menuItem : MainWindow.getMenu().getMenuList()) {
+					for (MenuItem menuItem : MainWindow.getMenuExcell().getMenuList()) {
 						text = text + "," + menuItem.getName() + "," + "0";
 					}
 					text = text + ",0,0,0";

@@ -25,6 +25,7 @@ import restaurant.customers.Customer;
 import restaurant.customers.CustomerPanel;
 import restaurant.files.classes.CustomerFile;
 import restaurant.files.classes.MoneyFile;
+import restaurant.files.classes.MoneyFileLine;
 import restaurant.files.classes.RestaurantFile;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
@@ -40,10 +41,12 @@ public class MainWindow {
 	private DefaultTableModel tableModel;
 	private RestaurantFile menuFile;
 	private static CustomerFile customerFile;
-	private static MoneyFile moneyFile;
+	private static MoneyFileLine moneyFile;
 	private static ImageIcon icon;
 	private static String imageFileName;
 	private static Menu menu;
+	private static Calendar calendar;
+	private static File[] listOfMoneyFiles;
 	
 	private List<Customer> customerList;
 	private List<JLabel> labelList;
@@ -70,10 +73,14 @@ public class MainWindow {
 	public MainWindow() {
 		menuFile = new RestaurantFile("menu.txt");
 		customerFile = new CustomerFile("customer.txt");
-		Calendar c = Calendar.getInstance();
-		String moneyFileName = (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.YEAR) + ".txt";
+		calendar = Calendar.getInstance();
+		String moneyFileName = (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + ".txt";
 		menu = new Menu(menuFile.getFile());
-		moneyFile = new MoneyFile(moneyFileName);
+		moneyFile = new MoneyFileLine(moneyFileName);
+		
+		File folder = new File("money/");
+		listOfMoneyFiles = folder.listFiles();
+		
 		customerList = new ArrayList<Customer>();
 		labelList = new ArrayList<>();
 		imageFileName = "logo_144x144.png";
@@ -325,8 +332,16 @@ public class MainWindow {
 		return menu;
 	}
 	
-	public static MoneyFile getMoneyFile() {
+	public static MoneyFileLine getMoneyFile() {
 		return moneyFile;
+	}
+	
+	public static Calendar getCalendar() {
+		return calendar;
+	}
+	
+	public static File[] getListOfMoneyFiles() {
+		return listOfMoneyFiles;
 	}
 	
 	private void fillTableModel(DefaultTableModel tableModel) {

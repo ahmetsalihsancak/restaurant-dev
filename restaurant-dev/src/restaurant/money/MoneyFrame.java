@@ -2,6 +2,9 @@ package restaurant.money;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,12 +12,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import restaurant.files.classes.MoneyFile;
+import restaurant.files.classes.MoneyFileLine;
 import restaurant.main.MainWindow;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MoneyFrame extends JFrame {
 
@@ -23,21 +31,22 @@ public class MoneyFrame extends JFrame {
 	private JTable table;
 	private JScrollPane scrollPane;
 	private Menu menu;
-	private MoneyFile moneyFile;
-
+	private MoneyFileLine moneyFile;
+	private File[] listOfMoneyFile;
+	
 	/**
 	 * Create the frame.
 	 */
 	public MoneyFrame() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 860, 566);
+		setBounds(100, 100, 1152, 566);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 824, 505);
+		scrollPane.setBounds(10, 44, 1116, 472);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -45,6 +54,7 @@ public class MoneyFrame extends JFrame {
 		
 		moneyFile = MainWindow.getMoneyFile();
 		menu = MainWindow.getMenu();
+		listOfMoneyFile = MainWindow.getListOfMoneyFiles();
 		
 		String[] header = new String[menu.getMenuList().size()*2 + 6];
 		header[0] = "Gun";
@@ -61,15 +71,39 @@ public class MoneyFrame extends JFrame {
 		tableModel.setColumnIdentifiers(header);
 		
 		table.setModel(tableModel);
-		fillMoneyTable();
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(10, 11, 128, 22);
+		contentPane.add(comboBox);
+		
+		JButton btnNewButton = new JButton("G\u00F6ster");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fileName = (String) comboBox.getSelectedItem();
+				fillMoneyTable(fileName);
+			}
+		});
+		btnNewButton.setBounds(148, 11, 89, 23);
+		contentPane.add(btnNewButton);
+		
+		fillCombobox(comboBox);
 	}
 	
-	private void fillMoneyTable() {
+	private void fillCombobox(JComboBox comboBox) {
+		for (File file : listOfMoneyFile) {
+			String fileName = file.getName();
+			comboBox.addItem(fileName);
+		}
+	}
+	
+	private void fillMoneyTable(String fileName) {
 		for (int i = tableModel.getRowCount()-1; i >= 0; i--) {
 			tableModel.removeRow(i);
 		}
-		System.out.println(moneyFile.getFileLinesSplitted().size());
-		for (String[] a : moneyFile.getFileLinesSplitted()) {
+		File file = new File("money/"+fileName);
+		List<String[]> fileLineSp = moneyFile.getFileScannerLineListSplitted(file);
+		System.out.println(fileLineSp.size());
+		for (String[] a : fileLineSp) {
 			tableModel.addRow(a);
 		}
 	}

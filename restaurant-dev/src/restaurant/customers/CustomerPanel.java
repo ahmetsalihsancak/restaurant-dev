@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import restaurant.files.classes.CustomerFile;
 import restaurant.main.MainWindow;
 import restaurant.menu.MenuItem;
-import restaurant.menu.MenuItem.paymentType_e;
+import restaurant.files.PaymentData.paymentType_e;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTabbedPane;
 import javax.swing.Icon;
@@ -162,7 +162,7 @@ public class CustomerPanel extends JFrame {
 				resetButtonAction(customer, lblPrice, lblPrice);
 			}
 		});
-		btnRemoveAll.setBounds(425, 237, 99, 23);
+		btnRemoveAll.setBounds(425, 261, 99, 23);
 		panel.add(btnRemoveAll);
 		
 		JButton btnChangeCustomerName = new JButton("\u0130sim De\u011Fi\u015Ftir");
@@ -220,15 +220,6 @@ public class CustomerPanel extends JFrame {
 		comboBoxPaymentType.setModel(new DefaultComboBoxModel(paymentType_e.values()));
 		comboBoxPaymentType.setBounds(425, 129, 99, 22);
 		panel.add(comboBoxPaymentType);
-			
-		JButton btnPayment = new JButton("\u00D6deme Al");
-		btnPayment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				paymentButtonAction(comboBox, comboBoxPaymentType, customer, lblPrice, menuList);
-			}
-		});
-		btnPayment.setBounds(425, 203, 99, 23);
-		panel.add(btnPayment);
 		
 		/* TAB 2 : PAYMENT */
 		
@@ -323,7 +314,7 @@ public class CustomerPanel extends JFrame {
 		btnDecrease_payment.setFont(new Font("Tahoma", Font.BOLD, 17));
 		panel_2.add(btnDecrease_payment);
 		
-		JComboBox<paymentType_e> comboBoxPaymentType_payment = new JComboBox();
+		JComboBox<paymentType_e> comboBoxPaymentType_payment = new JComboBox<paymentType_e>();
 		comboBoxPaymentType_payment.setModel(new DefaultComboBoxModel(paymentType_e.values()));
 		comboBoxPaymentType_payment.setBounds(264, 78, 145, 22);
 		panel_2.add(comboBoxPaymentType_payment);
@@ -333,6 +324,7 @@ public class CustomerPanel extends JFrame {
 		panel_2.add(scrollPane_1);
 		
 		table_paymentType = new JTable();
+		table_paymentType.setEnabled(false);
 		scrollPane_1.setViewportView(table_paymentType);
 		table_paymentType.setModel(tableModelPayment);
 		
@@ -340,7 +332,8 @@ public class CustomerPanel extends JFrame {
 		btnGetPayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(MainWindow.getMoneyFile().file.getAbsolutePath());
-				MainWindow.getMoneyFile().writeToMoneyFile(customer.getPayment().getItemList());
+				customer.getPayment().setPaymentType((paymentType_e) comboBoxPaymentType_payment.getSelectedItem());
+				MainWindow.getMoneyFile().writeToMoneyFile(customer.getPayment());
 			}
 		});
 		btnGetPayment.setBounds(419, 78, 99, 23);
@@ -391,45 +384,6 @@ public class CustomerPanel extends JFrame {
 	
 	private void updatePaymentPrice(JLabel lblPrice, float price) {
 		lblPrice.setText("\u00D6denecek \u00DCcret: " + price +" TL");
-	}
-	
-	private void paymentButtonAction(JComboBox<String> comboBox, JComboBox<paymentType_e> comboBox2, Customer customer, JLabel lblPrice, List<MenuItem> menuList) {
-		boolean itemFounded = false;
-		String itemName = comboBox.getSelectedItem().toString();
-		for (MenuItem menuItem : menuList) {
-			if (menuItem.getName().equalsIgnoreCase(itemName)) {
-				for (MenuItem customerItem : customer.getItemList()) {
-					if (customerItem.getName().equalsIgnoreCase(itemName)) {
-						itemFounded = true;
-						int oldCount = customerItem.getCount();
-						int itemCount = Integer.parseInt(textFieldCount.getText());
-						int newCount = oldCount - itemCount;
-						removeButtonAction(comboBox, customer, lblPrice, lblPrice_payment);
-						if(oldCount > 0 && newCount > 0) {
-							if(itemCount > 0) {
-								boolean pItemFounded = false;
-								for (MenuItem paymentItem : customer.getPayment().getItemList()) {
-									if (customerItem.getName().equalsIgnoreCase(paymentItem.getName())) {
-										
-									} else {
-										MenuItem newPaymentItem = customerItem;
-										newPaymentItem.setCount(itemCount);
-										newPaymentItem.setPaymentType((paymentType_e)comboBox2.getSelectedItem());
-									}
-								}
-							}
-							JOptionPane.showMessageDialog(null,textFieldCount.getText() + " adet " + itemName + " ürününün ödemesi baþarýlý.","Bilgi",1);
-						}
-						break;
-					} else {
-						itemFounded = false;
-					}
-				}
-				if (!itemFounded) {
-					JOptionPane.showMessageDialog(null,"Geçerli olmayan bir ürünün ödemesi alýnýyor.","Hata",0);
-				}
-			}
-		}
 	}
 	
 	private void resetButtonAction(Customer customer, JLabel lblPrice, JLabel lblPrice_payment) {

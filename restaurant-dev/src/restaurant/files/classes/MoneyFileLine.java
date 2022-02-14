@@ -10,18 +10,20 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+import restaurant.customers.Customer;
+import restaurant.files.PaymentData;
+import restaurant.files.PaymentData.paymentType_e;
 import restaurant.main.MainWindow;
-import restaurant.menu.Menu;
 import restaurant.menu.MenuItem;
 
-public class MoneyFile {
-	
+public class MoneyFileLine {
+
 	public static File file;
 	private static List<String> fileLineList = new ArrayList<String>();
 	private static List<String[]> fileLineListArray = new ArrayList<String[]>();
 	private static String filePath;
 	
-	public MoneyFile(String fileName) {
+	public MoneyFileLine(String fileName) {
 		createFile(fileName);
 	}
 	
@@ -38,27 +40,51 @@ public class MoneyFile {
 			if (!file.exists()) {
 				file.createNewFile();
 				FileWriter writer = new FileWriter(filePath);
-				for (int i = 0; i < c.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-					String text = ((i+1) + "," + month + "," + year);
+				String text = day + "," + month + "," + year;
+				for (MenuItem menuItem : MainWindow.getMenu().getMenuList()) {
+					text = text + "," + menuItem.getName() + "," + "0";
+				}
+				text = text + ",0,0,0";
+				writer.write(text + "\n");
+				writer.close();
+				readFileScannerLine(file);
+				System.out.println("dosya oluþtu	" + file.getName());
+			} else {
+				readFileScannerLine(file);
+				if (Integer.parseInt(fileLineListArray.get(fileLineListArray.size()-1)[0]) != day) {
+					String text = day + "," + month + "," + year;
 					for (MenuItem menuItem : MainWindow.getMenu().getMenuList()) {
 						text = text + "," + menuItem.getName() + "," + "0";
 					}
-					writer.write(text + "\n");
+					text = text + ",0,0,0";
+					String[] s;
+					Scanner scanner = new Scanner(text);
+					while(scanner.hasNextLine()) {
+						String scanned = scanner.nextLine();
+						fileLineList.add(scanned);
+						s = scanned.split(",");
+						fileLineListArray.add(s);
+					}
+					scanner.close();
+					FileWriter writer = new FileWriter(filePath);
+					for (String string : fileLineList) {
+						writer.write(string + "\n");
+					}
+					writer.close();
+					System.out.println("dosya var	" + file.getName());
+					readFileScannerLine(file);
 				}
-				writer.close();
-				System.out.println("dosya oluþtu	" + file.getName());
-			} else {
-				System.out.println("dosya var	" + file.getName());
-			}
-			System.out.println(file.getAbsolutePath());
-			readFileScannerLine(file);
+				System.out.println(file.getAbsolutePath());	
+				}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}
 	}
 	
-	public void writeToMoneyFile(List<MenuItem> addedItemsList) {
+	public void writeToMoneyFile(PaymentData paymentData) {
 		try {
+			List<MenuItem> addedItemsList = paymentData.getItemList();
+			paymentType_e pType = paymentData.getPaymentType();
 			Calendar c = MainWindow.getCalendar();
 			int year = c.get(Calendar.YEAR);
 			int month = c.get(Calendar.MONTH) + 1;
@@ -87,12 +113,19 @@ public class MoneyFile {
 							}
 						}
 					}
+					switch (pType) {
+					case NAKIT:
+						s[s.length-3] = String.valueOf(Float.parseFloat(s[s.length-3]) + paymentData.getTotalPayment());
+						break;
+					case KART:
+						s[s.length-2] = String.valueOf(Float.parseFloat(s[s.length-2]) + paymentData.getTotalPayment());
+						break;
+					}
+					s[s.length-1] = String.valueOf(Float.parseFloat(s[s.length-1]) + paymentData.getTotalPayment());
+					
+
 					scanned = "";
 					for (int i = 0; i < s.length; i++) {
-						if (i == s.length-1) {
-							scanned = scanned + s[i];
-							break;
-						}
 						scanned = scanned + s[i] + ",";
 					}
 				}
@@ -114,10 +147,43 @@ public class MoneyFile {
 		}
 	}
 
+	
 	public File getFile() {
 		return file;
 	}
-
+	
+	public List<String> getFileScannerLineList(File file) {
+		List<String> fileLineList1 = new ArrayList<String>();
+		try {
+			Scanner scanner = new Scanner(file);
+			while(scanner.hasNextLine()) {
+				String scanned = scanner.nextLine();
+				fileLineList1.add(scanned);
+			}
+			scanner.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
+		}
+		return fileLineList1;
+	}
+	
+	public List<String[]> getFileScannerLineListSplitted(File file) {
+		List<String[]> fileLineList1 = new ArrayList<String[]>();
+		try {
+			Scanner scanner = new Scanner(file);
+			String[] s;
+			while(scanner.hasNextLine()) {
+				String scanned = scanner.nextLine();
+				s = scanned.split(",");
+				fileLineList1.add(s);
+			}
+			scanner.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
+		}
+		return fileLineList1;
+	}
+	
 	public void readFileScannerLine(File file) {
 		try {
 			fileLineList.clear();

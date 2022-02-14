@@ -1,5 +1,5 @@
 1,Masa 1,Cay,2
-2,Masa 2
+2,Masa 2,Kahve,1
 3,Masa 3
 4,Masa 4
 5,Masa 5

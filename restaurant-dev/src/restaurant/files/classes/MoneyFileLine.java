@@ -122,7 +122,6 @@ public class MoneyFileLine {
 						break;
 					}
 					s[s.length-1] = String.valueOf(Float.parseFloat(s[s.length-1]) + paymentData.getTotalPayment());
-					
 
 					scanned = "";
 					for (int i = 0; i < s.length; i++) {

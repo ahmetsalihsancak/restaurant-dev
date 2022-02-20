@@ -58,16 +58,16 @@ public class MoneyFrame extends JFrame {
 		menuExcell = MainWindow.getMenuExcell();
 		listOfMoneyFile = MainWindow.getListOfMoneyFiles();
 		
-		String[] header = new String[menuExcell.getMenuList().size()*2 + 6];
-		header[0] = "Gun";
+		String[] header = new String[menuExcell.getMenuList().size()*2 + 9];
+		/*header[0] = "Gun";
 		header[1] = "Ay";
 		header[2] = "Yil";
 		header[menuExcell.getMenuList().size()*2 + 3] = "Nakit";
-		header[menuExcell.getMenuList().size()*2 + 4] = "Kart";
-		header[menuExcell.getMenuList().size()*2 + 5] = "Toplam";
+		header[menuExcell.getMenuList().size()*2 + 5] = "Kart";
+		header[menuExcell.getMenuList().size()*2 + 7] = "Toplam";
 		for (int i = 0; i < menuExcell.getMenuList().size(); i++) {
 			header[i*2+3] = menuExcell.getMenuList().get(i).getName();
-		}
+		}*/
 		
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(header);

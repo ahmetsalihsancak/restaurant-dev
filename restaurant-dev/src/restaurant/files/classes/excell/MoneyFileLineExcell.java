@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,13 +39,14 @@ public class MoneyFileLineExcell {
 			int day = c.get(Calendar.DATE);
 			System.out.println(year + "  " + month + "  " + day);
 			if (!file.exists()) {
+				System.out.println(year + "  " + month + "  " + day+ "  aaaaaaaaaaaaaaaaa");
 				file.createNewFile();
 				FileWriter writer = new FileWriter(filePath);
 				String text = day + "\t" + month + "\t" + year;
 				for (MenuItem menuItem : MainWindow.getMenuExcell().getMenuList()) {
 					text = text + "\t" + menuItem.getName() + "\t" + "0";
 				}
-				text = text + "\t0\t0\t0";
+				text = text + "\tNakit\t0\tKart\t0\tToplam\t0";
 				writer.write(text + "\n");
 				writer.close();
 				readFileScannerLine(file);
@@ -55,10 +57,11 @@ public class MoneyFileLineExcell {
 					file.delete();
 					file.createNewFile();
 					String text = day + "\t" + month + "\t" + year;
+					System.out.println(text+ "  bbbbbbbbbbbbbbb");
 					for (MenuItem menuItem : MainWindow.getMenuExcell().getMenuList()) {
 						text = text + "\t" + menuItem.getName() + "\t" + "0";
 					}
-					text = text + "\t0\t0\t0";
+					text = text + "\tNakit\t0\tKart\t0\tToplam\t0";
 					String[] s;
 					Scanner scanner = new Scanner(text);
 					while(scanner.hasNextLine()) {
@@ -80,6 +83,7 @@ public class MoneyFileLineExcell {
 				}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,e,"Hata",0);
+			
 		}
 	}
 	
@@ -117,10 +121,10 @@ public class MoneyFileLineExcell {
 					}
 					switch (pType) {
 					case NAKIT:
-						s[s.length-3] = String.valueOf(Float.parseFloat(s[s.length-3]) + paymentData.getTotalPayment());
+						s[s.length-5] = String.valueOf(Float.parseFloat(s[s.length-3]) + paymentData.getTotalPayment());
 						break;
 					case KART:
-						s[s.length-2] = String.valueOf(Float.parseFloat(s[s.length-2]) + paymentData.getTotalPayment());
+						s[s.length-3] = String.valueOf(Float.parseFloat(s[s.length-2]) + paymentData.getTotalPayment());
 						break;
 					}
 					s[s.length-1] = String.valueOf(Float.parseFloat(s[s.length-1]) + paymentData.getTotalPayment());

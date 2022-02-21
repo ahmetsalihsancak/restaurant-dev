@@ -32,28 +32,18 @@ public class MoneyFileLineExcell {
 	}
 	
 	public enum months {
-		OCAK(1),
-		SUBAT(2),
-		MART(3),
-		NISAN(4),
-		MAYIS(5),
-		HAZIRAN(6),
-		TEMMUZ(7),
-		AGUSTOS(8),
-		EYLUL(9),
-		EKIM(10),
-		KASIM(11),
-		ARALIK(12);
-		
-		private int month;
-		
-		months(int val){
-			month = val;	
-		}
-		
-		public int getMonth() {
-			return month;
-		}
+		OCAK,
+		SUBAT,
+		MART,
+		NISAN,
+		MAYIS,
+		HAZIRAN,
+		TEMMUZ,
+		AGUSTOS,
+		EYLUL,
+		EKIM,
+		KASIM,
+		ARALIK
 	}
 	
 	private void createMonthlyFile() {

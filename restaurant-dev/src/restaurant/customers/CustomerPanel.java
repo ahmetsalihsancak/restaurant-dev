@@ -46,6 +46,7 @@ public class CustomerPanel extends JFrame {
 	private JLabel lblPrice_payment;
 	private JTable table_paymentType;
 	private JLabel lblPrice_paymentMoney;
+	private static JLabel lbl1_payment;
 	
 	/**
 	 * Create the frame.
@@ -233,7 +234,7 @@ public class CustomerPanel extends JFrame {
 		table_payment.setModel(tableModel);
 		scrollPane_2.setViewportView(table_payment);
 		
-		JLabel lbl1_payment = new JLabel(customer.getName());
+		lbl1_payment = new JLabel(customer.getName());
 		lbl1_payment.setBounds(10, 11, 244, 40);
 		lbl1_payment.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		panel_2.add(lbl1_payment);
@@ -378,6 +379,12 @@ public class CustomerPanel extends JFrame {
 		}
 	}
 	
+	private void resetTable(DefaultTableModel tableModel) {
+		for (int i = tableModel.getRowCount()-1; i >= 0; i--) {
+			tableModel.removeRow(i);
+		}
+	}
+	
 	private void fillTableModelPayment(DefaultTableModel tableModel, Customer customer) {
 		for (int i = tableModel.getRowCount()-1; i >= 0; i--) {
 			tableModel.removeRow(i);
@@ -412,9 +419,12 @@ public class CustomerPanel extends JFrame {
 			customer.getItemList().clear();
 			setTitle(customer.getName());
 			lbl1.setText(customer.getName());
-			fillTableModel(tableModel, customer);
-			updatePrice(lblPrice, customer.getTotalPrice());
-			updatePrice(lblPrice_payment, customer.getTotalPrice());
+			lbl1_payment.setText(customer.getName());
+			resetTable(tableModel);
+			resetTable(tableModelPayment);
+			updatePrice(lblPrice, 0.0f);
+			updatePrice(lblPrice_payment, 0.0f);
+			updatePaymentPrice(lblPrice_paymentMoney, 0.0f);
 			customer.getPayment().getItemList().clear();
 			setCustomerText(customer);
 		} catch (Exception e2) {
@@ -555,5 +565,9 @@ public class CustomerPanel extends JFrame {
 	
 	public static void setLabel(String text) {
 		lbl1.setText(text);
+	}
+	
+	public static void setLabel2(String text) {
+		lbl1_payment.setText(text);
 	}
 }

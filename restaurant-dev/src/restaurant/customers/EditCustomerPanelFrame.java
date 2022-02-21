@@ -61,6 +61,7 @@ public class EditCustomerPanelFrame extends JFrame {
 					CustomerPanel.setLabel(customer.getName());
 					customer.updateLabel(customer.getName());
 					setTitle(customer.getName());
+					CustomerPanel.setLabel2(customer.getName());
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null,e2,"Hata",0);
 				}
@@ -76,6 +77,7 @@ public class EditCustomerPanelFrame extends JFrame {
 					customer.updateName("Masa " + customer.getNo());
 					CustomerPanel.setCustomerText(customer);
 					CustomerPanel.setLabel(customer.getName());
+					CustomerPanel.setLabel2(customer.getName());
 					customer.updateLabel(customer.getName());
 					setTitle(customer.getName());
 				} catch (Exception e2) {

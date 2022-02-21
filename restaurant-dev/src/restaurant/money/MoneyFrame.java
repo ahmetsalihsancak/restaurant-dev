@@ -244,7 +244,7 @@ public class MoneyFrame extends JFrame {
 		for (int i = 0; i < moneyFileExcell.getFileScannerLineList(file).size(); i++) {
 			String[] s = new String[menuExcell.getMenuList().size() + 4];
 			for (int ii = 0; ii < s.length; ii++) {
-				s[i] = "0";
+				s[ii] = "0";
 			}
 			s[0] = fileLineSp.get(i)[0] + "-" + fileLineSp.get(i)[1] + "-" + fileLineSp.get(i)[2];
 			for (int j = 3; j < fileLineSp.get(i).length; j = j + 2) {

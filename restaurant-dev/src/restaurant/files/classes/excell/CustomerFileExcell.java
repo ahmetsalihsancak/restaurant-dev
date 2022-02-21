@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+import restaurant.main.MainWindow;
+
 public class CustomerFileExcell {
 	
 	private File file;

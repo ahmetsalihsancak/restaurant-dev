@@ -20,12 +20,53 @@ import restaurant.menu.MenuItem;
 public class MoneyFileLineExcell {
 
 	public static File file;
+	public static File monthlyFile;
 	private static List<String> fileLineList = new ArrayList<String>();
 	private static List<String[]> fileLineListArray = new ArrayList<String[]>();
 	private static String filePath;
+	private static List<MenuItem> monthlyItems = new ArrayList<MenuItem>();
 	
 	public MoneyFileLineExcell(String fileName) {
 		createFile(fileName);
+		createMonthlyFile();
+	}
+	
+	public enum months {
+		OCAK(1),
+		SUBAT(2),
+		MART(3),
+		NISAN(4),
+		MAYIS(5),
+		HAZIRAN(6),
+		TEMMUZ(7),
+		AGUSTOS(8),
+		EYLUL(9),
+		EKIM(10),
+		KASIM(11),
+		ARALIK(12);
+		
+		private int month;
+		
+		months(int val){
+			month = val;	
+		}
+		
+		public int getMonth() {
+			return month;
+		}
+	}
+	
+	private void createMonthlyFile() {
+		try {
+			String fileName = "monthly.xls";
+			monthlyFile = new File(fileName);
+			monthlyItems = MainWindow.getMenuExcell().getMenuList();
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	private void createFile(String name) {

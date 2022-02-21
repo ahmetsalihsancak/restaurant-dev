@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -30,11 +31,13 @@ public class MoneyFrame extends JFrame {
 
 	private JPanel contentPane;
 	private DefaultTableModel tableModel;
+	private DefaultTableModel tableModel2;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private MenuExcell menuExcell;
 	private MoneyFileLineExcell moneyFileExcell;
 	private File[] listOfMoneyFile;
+	private JTable table_1;
 	
 	/**
 	 * Create the frame.
@@ -48,7 +51,7 @@ public class MoneyFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 44, 1116, 472);
+		scrollPane.setBounds(10, 108, 1116, 408);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -70,8 +73,9 @@ public class MoneyFrame extends JFrame {
 		}*/
 		
 		tableModel = new DefaultTableModel();
-		tableModel.setColumnIdentifiers(header);
+		tableModel2 = new DefaultTableModel();
 		
+		tableModel.setColumnIdentifiers(header);
 		table.setModel(tableModel);
 		
 		JComboBox comboBox = new JComboBox();
@@ -82,13 +86,22 @@ public class MoneyFrame extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileName = (String) comboBox.getSelectedItem();
-				fillMoneyTable(fileName);
+				//fillMoneyTable(fileName);
+				fill(fileName);
+				calculateMonth(fileName);
 			}
 		});
 		btnNewButton.setBounds(148, 11, 89, 23);
 		contentPane.add(btnNewButton);
 		
 		fillCombobox(comboBox);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 44, 1116, 48);
+		contentPane.add(scrollPane_1);
+		
+		table_1 = new JTable();
+		scrollPane_1.setViewportView(table_1);
 	}
 	
 	private void fillCombobox(JComboBox comboBox) {
@@ -107,6 +120,63 @@ public class MoneyFrame extends JFrame {
 		System.out.println(fileLineSp.size());
 		for (String[] a : fileLineSp) {
 			tableModel.addRow(a);
+		}
+	}
+	
+	private void calculateMonth(String fileName) {
+		String[] s = new String[menuExcell.getMenuList().size() + 4];
+		String[] ss = fileName.split("-");
+		s[0] = ss[0];
+		for (int i = 1; i < s.length; i++) {
+			int a = 0;
+			for (int j = 0; j < tableModel.getRowCount(); j++) {
+				String o = (String) tableModel.getValueAt(j, i);
+				if (o != null) {
+					a = a + Integer.parseInt((String) o);
+				}
+				System.out.println(a);
+			}
+			s[i] = String.valueOf(a);
+		}
+		tableModel2.addRow(s);
+	}
+	
+	private void fill(String fileName) {
+		for (int i = tableModel.getRowCount()-1; i >= 0; i--) {
+			tableModel.removeRow(i);
+		}
+		if (tableModel2.getRowCount() > 0) tableModel2.removeRow(0);
+		File file = new File("money/"+fileName);
+		String[] header = new String[menuExcell.getMenuList().size() + 4];
+		header[0] = "Gun";
+		header[menuExcell.getMenuList().size() + 1] = "Nakit";
+		header[menuExcell.getMenuList().size() + 2] = "Kart";
+		header[menuExcell.getMenuList().size() + 3] = "Toplam";
+		for (int i = 0; i < menuExcell.getMenuList().size(); i++) {
+			header[i+1] = menuExcell.getMenuList().get(i).getName();
+		}
+		tableModel.setColumnIdentifiers(header);
+		table.setModel(tableModel);
+		header[0] = "Ay";
+		tableModel2.setColumnIdentifiers(header);
+		table_1.setModel(tableModel2);
+		
+		List<String[]> fileLineSp = moneyFileExcell.getFileScannerLineListSplitted(file);
+		for (int i = 0; i < moneyFileExcell.getFileScannerLineList(file).size(); i++) {
+			String[] s = new String[menuExcell.getMenuList().size() + 4];
+			for (int ii = 0; ii < s.length; ii++) {
+				s[i] = "0";
+			}
+			s[0] = fileLineSp.get(i)[0] + "-" + fileLineSp.get(i)[1] + "-" + fileLineSp.get(i)[2];
+			for (int j = 3; j < fileLineSp.get(i).length; j = j + 2) {
+				for (int k = 1; k < header.length; k++) {
+					if (header[k].equalsIgnoreCase(fileLineSp.get(i)[j])) {
+						s[k] = fileLineSp.get(i)[j+1];
+						break;
+					}
+				}
+			}
+			tableModel.addRow(s);
 		}
 	}
 }

@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import restaurant.customers.Customer;
 import restaurant.customers.CustomerPanel;
+import restaurant.customers.CustomerSettingsPanel;
 import restaurant.files.classes.CustomerFile;
 import restaurant.files.classes.MoneyFile;
 import restaurant.files.classes.MoneyFileLine;
@@ -122,7 +123,7 @@ public class MainWindow {
 		}
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(106, 211, 438, 393);
+		scrollPane.setBounds(106, 211, 438, 365);
 		frame.getContentPane().add(scrollPane);
 		
 		JPanel panel = new JPanel();
@@ -311,12 +312,6 @@ public class MainWindow {
 		labelList.add(lbl12);
 		
 		JLabel lblMenu = new JLabel("MENU");
-		lblMenu.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				onMenuClick();
-			}
-		});
 		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMenu.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblMenu.setBounds(106, 177, 438, 23);
@@ -333,6 +328,24 @@ public class MainWindow {
 		panel_1.setBounds(20, 11, 144, 155);
 		frame.getContentPane().add(panel_1);
 		panel_1.add(new JLabel(icon));
+		
+		JButton btnMenuSettings = new JButton("Men\u00FC Ayarlar\u0131");
+		btnMenuSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onMenuClick();
+			}
+		});
+		btnMenuSettings.setBounds(106, 587, 218, 23);
+		frame.getContentPane().add(btnMenuSettings);
+		
+		JButton btnCustomerSettings = new JButton("Masa Ayarlar\u0131");
+		btnCustomerSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				customerSettingsButtonAction();
+			}
+		});
+		btnCustomerSettings.setBounds(326, 587, 218, 23);
+		frame.getContentPane().add(btnCustomerSettings);
 		
 		//File file = new File("customer.txt");
 		File file = new File("customer.xls");
@@ -376,11 +389,15 @@ public class MainWindow {
 		return tableModel;
 	}
 	
+	private void customerSettingsButtonAction() {
+		CustomerSettingsPanel p = new CustomerSettingsPanel();
+		p.setVisible(true);
+	}
+	
 	private void onMenuClick() {
 		MenuSettingsPanel p = new MenuSettingsPanel();
 		p.setVisible(true);
 	}
-	
 	
 	private void fillCustomerList(List<Customer> customerList, List<String[]> fileLineListArray) {
 		try {

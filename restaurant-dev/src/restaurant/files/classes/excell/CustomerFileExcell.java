@@ -53,6 +53,21 @@ public class CustomerFileExcell {
 		return file;
 	}
 	
+	public void updateCustomerName() {
+		try {
+			file.delete();
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file);
+			for (String[] s : fileLineListArray) {
+				writer.write(s[0] + "\t" + s[1] + "\n");
+			}
+			writer.close();
+			readFileScannerLine(file);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	public void readFileScannerLine(File file) {
 		try {
 			fileLineList.clear();

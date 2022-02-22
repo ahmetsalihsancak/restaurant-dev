@@ -49,6 +49,7 @@ public class MenuSettingsPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("Menü Düzenleme");
 		
 		try {
 			setIconImage(ImageIO.read(new File(MainWindow.getImageFileName())));

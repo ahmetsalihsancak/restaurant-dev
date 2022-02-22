@@ -34,6 +34,7 @@ import restaurant.files.classes.excell.RestaurantFileExcell;
 import restaurant.menu.Menu;
 import restaurant.menu.MenuExcell;
 import restaurant.menu.MenuItem;
+import restaurant.menu.MenuSettingsPanel;
 import restaurant.money.MoneyFrame;
 
 import java.awt.event.MouseAdapter;
@@ -43,9 +44,9 @@ public class MainWindow {
 
 	private JFrame frame;
 	private JTable table;
-	private DefaultTableModel tableModel;
+	private static DefaultTableModel tableModel;
 
-	private RestaurantFileExcell menuFileExcell;
+	private static RestaurantFileExcell menuFileExcell;
 	
 	private static CustomerFileExcell customerFileExcell;
 	
@@ -138,7 +139,7 @@ public class MainWindow {
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(header);
 		scrollPane_1.setViewportView(table);
-		fillTableModel(tableModel);
+		menuExcell.fillTableModel(tableModel);
 		table.setModel(tableModel);
 		
 		JButton btnCustomer1 = new JButton("1");
@@ -310,6 +311,12 @@ public class MainWindow {
 		labelList.add(lbl12);
 		
 		JLabel lblMenu = new JLabel("MENU");
+		lblMenu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				onMenuClick();
+			}
+		});
 		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMenu.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblMenu.setBounds(106, 177, 438, 23);
@@ -349,6 +356,10 @@ public class MainWindow {
 		return menuExcell;
 	}
 	
+	public static RestaurantFileExcell getMenuFileExcell() {
+		return menuFileExcell;
+	}
+	
 	public static MoneyFileLineExcell getMoneyFileExcell() {
 		return moneyFileExcell;
 	}
@@ -361,17 +372,15 @@ public class MainWindow {
 		return listOfMoneyFiles;
 	}
 	
-	private void fillTableModel(DefaultTableModel tableModel) {
-		try {
-			for (int i = 0; i < menuExcell.getMenuList().size(); i++) {
-				String name = menuExcell.getMenuList().get(i).getName();
-				float price = menuExcell.getMenuList().get(i).getPrice();
-				tableModel.addRow(new Object[]{name,price});
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,e,"Hata",0);
-		}
+	public static DefaultTableModel getMenuTableModel() {
+		return tableModel;
 	}
+	
+	private void onMenuClick() {
+		MenuSettingsPanel p = new MenuSettingsPanel();
+		p.setVisible(true);
+	}
+	
 	
 	private void fillCustomerList(List<Customer> customerList, List<String[]> fileLineListArray) {
 		try {

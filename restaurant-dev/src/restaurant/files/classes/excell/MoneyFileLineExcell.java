@@ -24,11 +24,9 @@ public class MoneyFileLineExcell {
 	private static List<String> fileLineList = new ArrayList<String>();
 	private static List<String[]> fileLineListArray = new ArrayList<String[]>();
 	private static String filePath;
-	private static List<MenuItem> monthlyItems = new ArrayList<MenuItem>();
 	
 	public MoneyFileLineExcell(String fileName) {
 		createFile(fileName);
-		createMonthlyFile();
 	}
 	
 	public enum months {
@@ -45,22 +43,11 @@ public class MoneyFileLineExcell {
 		KASIM,
 		ARALIK
 	}
-	
-	private void createMonthlyFile() {
-		try {
-			String fileName = "monthly.xls";
-			monthlyFile = new File(fileName);
-			monthlyItems = MainWindow.getMenuExcell().getMenuList();
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-		} catch (Exception e) {
-			
-		}
-	}
-	
+
 	private void createFile(String name) {
 		try {
+			File moneyMKDIR = new File("money");
+			if (!moneyMKDIR.exists()) moneyMKDIR.mkdir();
 			filePath = "money/" + name;
 			file = new File(filePath);
 			Calendar c = MainWindow.getCalendar();
@@ -183,6 +170,24 @@ public class MoneyFileLineExcell {
 		}
 	}
 
+	public void updateFile(String text) {
+		try {
+			fileLineList.remove(fileLineList.size()-1);
+			fileLineListArray.remove(fileLineListArray.size()-1);
+			fileLineList.add(text);
+			String[] s = text.split("\t");
+			fileLineListArray.add(s);
+			file.delete();
+			file.createNewFile();
+			FileWriter writer = new FileWriter(filePath);
+			for (String string : fileLineList) {
+				writer.write(string + "\n");
+			}
+			writer.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 	public File getFile() {
 		return file;

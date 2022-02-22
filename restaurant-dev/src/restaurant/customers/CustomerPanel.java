@@ -161,7 +161,7 @@ public class CustomerPanel extends JFrame {
 		JButton btnRemoveAll = new JButton("S\u0131f\u0131rla");
 		btnRemoveAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				resetButtonAction(customer, lblPrice, lblPrice);
+				resetButtonAction(customer, lblPrice, lblPrice_payment);
 			}
 		});
 		btnRemoveAll.setBounds(425, 261, 99, 23);

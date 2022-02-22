@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class MenuExcell {
 	
@@ -20,8 +21,9 @@ public class MenuExcell {
 		return icecekList;
 	}
 	
-	private void fillMenu(File file) {
+	public void fillMenu(File file) {
 		try {
+			icecekList.clear();
 			String name = null;
 			float price = 0;
 			Scanner scanner = new Scanner(file);
@@ -34,6 +36,21 @@ public class MenuExcell {
 				icecekList.add(new MenuItem(name, price));
 			}
 			scanner.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
+		}
+	}
+	
+	public void fillTableModel(DefaultTableModel tableModel) {
+		try {
+			for (int i = tableModel.getRowCount()-1; i >= 0; i--) {
+				tableModel.removeRow(i);
+			}
+			for (int i = 0; i < this.getMenuList().size(); i++) {
+				String name = this.getMenuList().get(i).getName();
+				float price = this.getMenuList().get(i).getPrice();
+				tableModel.addRow(new Object[]{name,price});
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,e,"Hata",0);
 		}

@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,6 +49,12 @@ public class MenuSettingsPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		try {
+			setIconImage(ImageIO.read(new File(MainWindow.getImageFileName())));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,e,"Hata",0);
+		}
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 250, 257);

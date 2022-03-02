@@ -108,7 +108,9 @@ public class CustomerSettingsPanel extends JFrame {
 		lblNewLabel_2.setBounds(245, 97, 179, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		lblNewLabel_3 = new JLabel("<html>Varsay\u0131lan masa ad\u0131 de\u011Fi\u015Ftirildikten sonra, masa ad\u0131n\u0131n ana ekranda ve masa panelinde de g\u00FCncellenmesi i\u00E7in program\u0131n yeniden ba\u015Flat\u0131lmas\u0131 gerekmektedir.</html>");
+		lblNewLabel_3 = new JLabel("<html>Varsay\u0131lan masa ad\u0131 de\u011Fi\u015Ftirildikten sonra, "
+				+ "masa ad\u0131n\u0131n ana ekranda ve masa panelinde de g\u00FCncellenmesi i\u00E7in "
+				+ "program\u0131n yeniden ba\u015Flat\u0131lmas\u0131 gerekmektedir.</html>");
 		lblNewLabel_3.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setBounds(245, 122, 179, 128);

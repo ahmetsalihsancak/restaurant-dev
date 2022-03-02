@@ -207,12 +207,22 @@ public class MoneyFrame extends JFrame {
 		String[] ss = fileName.split("-");
 		int code = Integer.parseInt(ss[0]);
 		s[0] = months.values()[code-1].toString();
-		for (int i = 1; i < s.length; i++) {
+		for (int i = 1; i < s.length-3; i++) {
 			int a = 0;
 			for (int j = 0; j < tableModel.getRowCount(); j++) {
 				String o = (String) tableModel.getValueAt(j, i);
 				if (o != null) {
 					a = a + Integer.parseInt((String) o);
+				}
+			}
+			s[i] = String.valueOf(a);
+		}
+		for (int i = s.length-3; i < s.length; i++) {
+			float a = 0;
+			for (int j = 0; j < tableModel.getRowCount(); j++) {
+				String o = (String) tableModel.getValueAt(j, i);
+				if (o != null) {
+					a = a + Float.parseFloat((String) o);
 				}
 			}
 			s[i] = String.valueOf(a);

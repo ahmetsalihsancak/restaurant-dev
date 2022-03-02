@@ -139,10 +139,10 @@ public class MoneyFileLineExcell {
 					}
 					switch (pType) {
 					case NAKIT:
-						s[s.length-5] = String.valueOf(Float.parseFloat(s[s.length-3]) + paymentData.getTotalPayment());
+						s[s.length-5] = String.valueOf(Float.parseFloat(s[s.length-5]) + paymentData.getTotalPayment());
 						break;
 					case KART:
-						s[s.length-3] = String.valueOf(Float.parseFloat(s[s.length-2]) + paymentData.getTotalPayment());
+						s[s.length-3] = String.valueOf(Float.parseFloat(s[s.length-3]) + paymentData.getTotalPayment());
 						break;
 					}
 					s[s.length-1] = String.valueOf(Float.parseFloat(s[s.length-1]) + paymentData.getTotalPayment());

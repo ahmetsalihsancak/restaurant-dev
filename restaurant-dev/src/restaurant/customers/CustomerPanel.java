@@ -318,11 +318,11 @@ public class CustomerPanel extends JFrame {
 		
 		JComboBox<paymentType_e> comboBoxPaymentType_payment = new JComboBox<paymentType_e>();
 		comboBoxPaymentType_payment.setModel(new DefaultComboBoxModel(paymentType_e.values()));
-		comboBoxPaymentType_payment.setBounds(264, 78, 145, 22);
+		comboBoxPaymentType_payment.setBounds(265, 224, 145, 22);
 		panel_2.add(comboBoxPaymentType_payment);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(264, 111, 255, 135);
+		scrollPane_1.setBounds(264, 78, 255, 135);
 		panel_2.add(scrollPane_1);
 		
 		table_paymentType = new JTable();
@@ -334,7 +334,6 @@ public class CustomerPanel extends JFrame {
 		btnGetPayment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (customer.getPayment().getItemList().size() > 0) {
-					System.out.println(MainWindow.getMoneyFileExcell().file.getAbsolutePath());
 					customer.getPayment().setPaymentType((paymentType_e) comboBoxPaymentType_payment.getSelectedItem());
 					MainWindow.getMoneyFileExcell().writeToMoneyFile(customer.getPayment());
 					for (MenuItem customerItem : customer.getItemList()) {
@@ -356,7 +355,7 @@ public class CustomerPanel extends JFrame {
 				}
 			}
 		});
-		btnGetPayment.setBounds(419, 78, 99, 23);
+		btnGetPayment.setBounds(420, 224, 99, 23);
 		panel_2.add(btnGetPayment);
 		
 		lblPrice_paymentMoney = new JLabel("\u00D6denecek \u00DCcret: 0.0 TL");

@@ -131,7 +131,7 @@ public class MainWindow {
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 11, 416, 369);
+		scrollPane_1.setBounds(10, 11, 416, 341);
 		panel.add(scrollPane_1);
 		
 		table = new JTable();

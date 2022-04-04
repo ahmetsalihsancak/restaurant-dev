@@ -49,7 +49,7 @@ public class CustomerSettingsPanel extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		setResizable(false);
 		setTitle("Masa Ayarlarý");
 		
 		try {

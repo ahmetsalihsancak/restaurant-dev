@@ -50,11 +50,12 @@ public class MoneyFrame extends JFrame {
 	 */
 	public MoneyFrame() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1152, 566);
+		setBounds(100, 100, 1400, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setResizable(false);
 		try {
 			setIconImage(ImageIO.read(new File(MainWindow.getImageFileName())));
 		} catch (Exception e) {
@@ -63,7 +64,7 @@ public class MoneyFrame extends JFrame {
 		setTitle("Aylýk Görünüm");
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 108, 1116, 408);
+		scrollPane.setBounds(10, 144, 1364, 556);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -89,6 +90,7 @@ public class MoneyFrame extends JFrame {
 		
 		tableModel.setColumnIdentifiers(header);
 		table.setModel(tableModel);
+		table.setAutoResizeMode(0);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(10, 11, 128, 22);
@@ -109,11 +111,12 @@ public class MoneyFrame extends JFrame {
 		fillCombobox(comboBox);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 44, 1116, 48);
+		scrollPane_1.setBounds(10, 56, 1364, 70);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
 		scrollPane_1.setViewportView(table_1);
+		table_1.setAutoResizeMode(0);
 		
 		JButton btnSave = new JButton("Kaydet");
 		btnSave.addActionListener(new ActionListener() {

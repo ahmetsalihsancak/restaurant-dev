@@ -50,7 +50,7 @@ public class MenuSettingsPanel extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setTitle("Menü Düzenleme");
-		
+		setResizable(false);
 		try {
 			setIconImage(ImageIO.read(new File(MainWindow.getImageFileName())));
 		} catch (Exception e) {
@@ -144,7 +144,7 @@ public class MenuSettingsPanel extends JFrame {
 		lblNewLabel_2.setBounds(270, 172, 164, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("<html><p>Yeni fiyatlar\u0131n masalarda da g\u00FCncellenmesi i\u00E7in masalar\u0131n s\u0131f\u0131rlanmas\u0131 gerekmektedir.</p></html>");
+		JLabel lblNewLabel_3 = new JLabel("<html><p>De\u011Fi\u015Fiklikler yap\u0131ld\u0131ktan sonra l\u00FCtfen program\u0131 kapat\u0131p tekrar a\u00E7\u0131n\u0131z.</p></html>");
 		lblNewLabel_3.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_3.setBounds(270, 197, 164, 70);
@@ -153,13 +153,30 @@ public class MenuSettingsPanel extends JFrame {
 	}
 	
 	private void addButtonAction(JComboBox<String> comboBox, List<MenuItem> menuList) {
-		String text = textField.getText() + "\t" + textField_1.getText();
-		menuFileExcell.addNewItem(text);
-		menuExcell.fillMenu(menuFileExcell.getFile());
-		menuExcell.fillTableModel(tableModel);
-		menuExcell.fillTableModel(MainWindow.getMenuTableModel());
-		updateMoneyFile();
-		fillMenuList(comboBox, menuList);
+		if (textField_1.getText().equalsIgnoreCase("") || textField.getText().equalsIgnoreCase("")) {
+			JOptionPane.showMessageDialog(null,"Fiyat veya ürün adý boþ býrakýlamaz.","Hata",0);
+		}
+		else {
+			boolean itemFound = false;
+			for (MenuItem menuItem : menuList) {
+				if(menuItem.getName().equalsIgnoreCase(textField.getText())) {
+					itemFound = true;
+					break;
+				}
+			}
+			if (!itemFound) {
+				String text = textField.getText() + "\t" + textField_1.getText();
+				menuFileExcell.addNewItem(text);
+				menuExcell.fillMenu(menuFileExcell.getFile());
+				menuExcell.fillTableModel(tableModel);
+				menuExcell.fillTableModel(MainWindow.getMenuTableModel());
+				updateMoneyFile();
+				fillMenuList(comboBox, menuList);
+			}
+			else {
+				JOptionPane.showMessageDialog(null,"Ayný isimle ürün bulunmaktadýr.","Hata",0);
+			}
+		}
 	}
 	
 	private void updateMoneyFile() {
@@ -187,17 +204,22 @@ public class MenuSettingsPanel extends JFrame {
 	}
 	
 	private void updatePriceButtonAction(JComboBox comboBox, List<MenuItem> menuList) {
-		for (int i = 0; i < menuFileExcell.getFileLinesSplitted().size(); i++) {
-			if (menuFileExcell.getFileLinesSplitted().get(i)[0].equalsIgnoreCase(comboBox.getSelectedItem().toString())) {
-				String[] s = {menuFileExcell.getFileLinesSplitted().get(i)[0],textField_2.getText()};
-				menuFileExcell.getFileLinesSplitted().set(i, s);
-			}
+		if (textField_2.getText().equalsIgnoreCase("")) {
+			JOptionPane.showMessageDialog(null,"Fiyat boþ býrakýlamaz.","Hata",0);
 		}
-		menuFileExcell.updateFile_Price();
-		menuExcell.fillMenu(menuFileExcell.getFile());
-		menuExcell.fillTableModel(tableModel);
-		menuExcell.fillTableModel(MainWindow.getMenuTableModel());
-		fillMenuList(comboBox, menuList);
+		else {
+			for (int i = 0; i < menuFileExcell.getFileLinesSplitted().size(); i++) {
+				if (menuFileExcell.getFileLinesSplitted().get(i)[0].equalsIgnoreCase(comboBox.getSelectedItem().toString())) {
+					String[] s = {menuFileExcell.getFileLinesSplitted().get(i)[0],textField_2.getText()};
+					menuFileExcell.getFileLinesSplitted().set(i, s);
+				}
+			}
+			menuFileExcell.updateFile_Price();
+			menuExcell.fillMenu(menuFileExcell.getFile());
+			menuExcell.fillTableModel(tableModel);
+			menuExcell.fillTableModel(MainWindow.getMenuTableModel());
+			fillMenuList(comboBox, menuList);
+		}
 	}
 	
 	private void fillMenuList(JComboBox<String> comboBox, List<MenuItem> menuList) {
